@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-cream font-sans antialiased;
+  }
+  h1, h2, h3, .font-display {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-gold {
+    @apply btn bg-gold-gradient text-ink font-semibold shadow-gold hover:brightness-110;
+  }
+  .btn-outline {
+    @apply btn border border-gold/50 text-gold hover:bg-gold/10;
+  }
+  .btn-ghost {
+    @apply btn text-cream/80 hover:bg-white/5;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface-alt px-4 py-2.5 text-cream placeholder:text-cream/40 outline-none focus:border-gold/60;
+  }
+  .label { @apply block text-sm text-cream/70 mb-1.5; }
+  .chip { @apply inline-flex items-center rounded-full border border-line px-3 py-1 text-xs text-cream/80; }
+  .gold-text { @apply bg-gold-gradient bg-clip-text text-transparent; }
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #2A2E36; border-radius: 8px; }

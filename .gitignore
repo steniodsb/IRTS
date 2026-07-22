@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Env / secrets — NEVER commit
+.env
+.env.*
+!.env.example
+.ENV.txt
+
+# Client-private material (do not publish to GitHub)
+_client/
+CONTRATO.pdf
+*.jpeg
+*.jpg
+!apps/**/assets/**
+!packages/**/assets/**
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+
+# Expo / React Native
+.expo/
+.expo-shared/
+apps/mobile/ios/
+apps/mobile/android/
+*.orig.*
+web-build/
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

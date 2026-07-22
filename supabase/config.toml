@@ -1,0 +1,35 @@
+# Configuração do Supabase CLI. Projeto: ivezfeaztisayqatyrkg
+project_id = "ivezfeaztisayqatyrkg"
+
+[db]
+major_version = 17
+
+[api]
+enabled = true
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+enable_signup = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/**", "irts://**"]
+jwt_expiry = 3600
+enable_confirmations = false   # PENDENTE: ativar confirmação de e-mail em produção
+
+[storage]
+enabled = true
+file_size_limit = "5368709120"  # 5GB (vídeos de curso)
+
+[functions.consultor-ia]
+verify_jwt = true
+[functions.stripe-webhook]
+verify_jwt = false
+[functions.checkout]
+verify_jwt = true
+[functions.ingest-embeddings]
+verify_jwt = true
+[functions.sign-asset]
+verify_jwt = true
+[functions.cron-abandoned]
+verify_jwt = false
