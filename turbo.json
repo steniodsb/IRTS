@@ -1,6 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [".env"],
+  "globalEnv": [
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SITE_URL",
+    "NEXT_PUBLIC_APP_NAME",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY"
+  ],
   "tasks": {
     "dev": {
       "cache": false,
@@ -12,6 +19,18 @@
     },
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "RESEND_API_KEY",
+        "EMAIL_FROM",
+        "OWNER_NOTIFY_EMAIL",
+        "ANTHROPIC_API_KEY",
+        "OPENAI_API_KEY",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET",
+        "STRIPE_PRICE_MENSAL",
+        "STRIPE_PRICE_ANUAL"
+      ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {},

@@ -5,6 +5,15 @@
 > pelo contrato (Anexo I / Cláusula 9.3), são fornecidos pelo CONTRATANTE. Enquanto não chegarem,
 > deixei tudo funcionando com dados de exemplo e degradação clara (sem quebrar).
 
+## 🧭 Decisões e prioridades (atualizado 2026-07-22)
+
+- **Consultor IA** → **stand by** (não desenvolver/ligar agora).
+- **Pagamentos** → **decidir depois** (deixar para testar mais adiante). Stripe segue implementado como referência.
+- **Apple / Google (lojas)** → **por último**.
+- **Resend (e-mail)** → o cliente vai **enviar a chave**; integro assim que chegar.
+- **Próximo passo sugerido (sem depender de chaves):** `pnpm install` + `typecheck` para o projeto compilar,
+  e aplicar as migrations no Supabase (`supabase db push`) para o banco entrar no ar.
+
 ## 🔴 Bloqueadores (sem isso, o recurso não funciona)
 
 ### 1. Consultor IA — chaves de API
