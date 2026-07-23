@@ -1,24 +1,37 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Upload } from 'lucide-react';
+import { Plus, Save, Upload } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { createClient } from '@/lib/supabase/client';
 import { LIBRARY_TYPE_LABELS } from '@irts/shared';
 
 const TYPES = Object.entries(LIBRARY_TYPE_LABELS) as [string, string][];
 
-export function LibraryForm() {
+type LibraryItem = {
+  id?: string;
+  title?: string;
+  type?: string;
+  description?: string | null;
+  category?: string | null;
+  file_url?: string | null;
+  storage_path?: string | null;
+  is_free?: boolean;
+  published?: boolean;
+};
+
+export function LibraryForm({ item }: { item?: LibraryItem }) {
   const router = useRouter();
   const supabase = createClient();
+  const isEdit = !!item?.id;
 
-  const [title, setTitle] = useState('');
-  const [type, setType] = useState('ebook');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [fileUrl, setFileUrl] = useState('');
-  const [isFree, setIsFree] = useState(false);
-  const [published, setPublished] = useState(true);
+  const [title, setTitle] = useState(item?.title ?? '');
+  const [type, setType] = useState(item?.type ?? 'ebook');
+  const [description, setDescription] = useState(item?.description ?? '');
+  const [category, setCategory] = useState(item?.category ?? '');
+  const [fileUrl, setFileUrl] = useState(item?.storage_path ?? item?.file_url ?? '');
+  const [isFree, setIsFree] = useState(item?.is_free ?? false);
+  const [published, setPublished] = useState(item?.published ?? true);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -43,17 +56,28 @@ export function LibraryForm() {
       file_url: isStoragePath ? null : (fileUrl || null),
       storage_path: isStoragePath ? fileUrl : null,
     };
-    const { error } = await supabase.from('library_items').insert(payload);
-    setSaving(false);
-    if (error) { setMsg({ ok: false, text: error.message }); return; }
-    setMsg({ ok: true, text: 'Item criado.' });
-    setTitle(''); setDescription(''); setCategory(''); setFileUrl('');
-    router.refresh();
+    try {
+      if (isEdit) {
+        const { error } = await supabase.from('library_items').update(payload).eq('id', item!.id);
+        if (error) throw error;
+        setMsg({ ok: true, text: 'Item atualizado.' });
+      } else {
+        const { error } = await supabase.from('library_items').insert(payload);
+        if (error) throw error;
+        setMsg({ ok: true, text: 'Item criado.' });
+        setTitle(''); setDescription(''); setCategory(''); setFileUrl('');
+      }
+      router.refresh();
+    } catch (err: any) {
+      setMsg({ ok: false, text: err.message ?? 'Erro ao salvar.' });
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <form onSubmit={save} className="card space-y-4 p-6">
-      <h2 className="font-serif text-xl text-cream">Novo item</h2>
+      <h2 className="font-serif text-xl text-cream">{isEdit ? 'Editar item' : 'Novo item'}</h2>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="label">Título</label>
@@ -68,12 +92,12 @@ export function LibraryForm() {
       </div>
       <div>
         <label className="label">Descrição</label>
-        <textarea className="input min-h-24" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <textarea className="input min-h-24" value={description ?? ''} onChange={(e) => setDescription(e.target.value)} />
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="label">Categoria</label>
-          <input className="input" value={category} onChange={(e) => setCategory(e.target.value)} />
+          <input className="input" value={category ?? ''} onChange={(e) => setCategory(e.target.value)} />
         </div>
         <div>
           <label className="label">URL do arquivo (ou faça upload)</label>
@@ -96,7 +120,9 @@ export function LibraryForm() {
         </label>
       </div>
       {msg && <p className={`text-sm ${msg.ok ? 'text-emerald-400' : 'text-red-400'}`}>{msg.text}</p>}
-      <Button type="submit" disabled={saving}>{saving ? 'Salvando…' : <>Adicionar <Plus size={16} /></>}</Button>
+      <Button type="submit" disabled={saving}>
+        {saving ? 'Salvando…' : isEdit ? <>Salvar <Save size={16} /></> : <>Adicionar <Plus size={16} /></>}
+      </Button>
     </form>
   );
 }

@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { BookForm } from '@/components/admin/BookForm';
 import { RowActions } from '@/components/admin/RowActions';
@@ -38,20 +39,36 @@ export default async function AdminLivrosPage() {
                 </thead>
                 <tbody className="divide-y divide-line/60">
                   {list.map((b) => (
-                    <tr key={b.id} className="text-cream/80">
-                      <td className="px-5 py-3">
-                        <p className="font-medium text-cream">{b.title}</p>
-                        {b.author && <p className="text-xs text-cream/40">{b.author}</p>}
-                      </td>
-                      <td className="px-5 py-3">{formatBRL(b.price_cents)}</td>
-                      <td className="px-5 py-3">{b.stock}</td>
-                      <td className="px-5 py-3">
-                        {b.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
-                      </td>
-                      <td className="px-5 py-3">
-                        <RowActions table="books" id={b.id} published={b.published} label="o livro" />
-                      </td>
-                    </tr>
+                    <Fragment key={b.id}>
+                      <tr className="text-cream/80">
+                        <td className="px-5 py-3">
+                          <p className="font-medium text-cream">{b.title}</p>
+                          {b.author && <p className="text-xs text-cream/40">{b.author}</p>}
+                        </td>
+                        <td className="px-5 py-3">{formatBRL(b.price_cents)}</td>
+                        <td className="px-5 py-3">{b.stock}</td>
+                        <td className="px-5 py-3">
+                          {b.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
+                        </td>
+                        <td className="px-5 py-3">
+                          <RowActions table="books" id={b.id} published={b.published} label="o livro" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={5} className="px-5 pb-4 pt-0">
+                          <details>
+                            <summary className="cursor-pointer text-sm text-gold hover:underline">Editar livro</summary>
+                            <div className="mt-4">
+                              <BookForm book={{
+                                id: b.id, title: b.title, slug: b.slug, author: b.author, description: b.description,
+                                cover_url: b.cover_url, price_cents: b.price_cents, stock: b.stock,
+                                weight_grams: b.weight_grams, pages: b.pages, published: b.published,
+                              }} />
+                            </div>
+                          </details>
+                        </td>
+                      </tr>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>

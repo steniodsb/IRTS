@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { EventForm } from '@/components/admin/EventForm';
 import { RowActions } from '@/components/admin/RowActions';
@@ -38,16 +39,32 @@ export default async function AdminAgendaPage() {
                 </thead>
                 <tbody className="divide-y divide-line/60">
                   {list.map((ev) => (
-                    <tr key={ev.id} className="text-cream/80">
-                      <td className="px-5 py-3">
-                        <p className="font-medium text-cream">{ev.title}</p>
-                        {ev.location && <p className="text-xs text-cream/40">{ev.location}</p>}
-                      </td>
-                      <td className="px-5 py-3">{EVENT_TYPE_LABELS[ev.type as keyof typeof EVENT_TYPE_LABELS] ?? ev.type}</td>
-                      <td className="px-5 py-3 text-cream/60">{formatDateTime(ev.starts_at)}</td>
-                      <td className="px-5 py-3">{ev.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}</td>
-                      <td className="px-5 py-3"><RowActions table="events" id={ev.id} published={ev.published} label="o evento" /></td>
-                    </tr>
+                    <Fragment key={ev.id}>
+                      <tr className="text-cream/80">
+                        <td className="px-5 py-3">
+                          <p className="font-medium text-cream">{ev.title}</p>
+                          {ev.location && <p className="text-xs text-cream/40">{ev.location}</p>}
+                        </td>
+                        <td className="px-5 py-3">{EVENT_TYPE_LABELS[ev.type as keyof typeof EVENT_TYPE_LABELS] ?? ev.type}</td>
+                        <td className="px-5 py-3 text-cream/60">{formatDateTime(ev.starts_at)}</td>
+                        <td className="px-5 py-3">{ev.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}</td>
+                        <td className="px-5 py-3"><RowActions table="events" id={ev.id} published={ev.published} label="o evento" /></td>
+                      </tr>
+                      <tr>
+                        <td colSpan={5} className="px-5 pb-4 pt-0">
+                          <details>
+                            <summary className="cursor-pointer text-sm text-gold hover:underline">Editar evento</summary>
+                            <div className="mt-4">
+                              <EventForm event={{
+                                id: ev.id, title: ev.title, type: ev.type, starts_at: ev.starts_at,
+                                location: ev.location, join_url: ev.join_url, description: ev.description,
+                                published: ev.published,
+                              }} />
+                            </div>
+                          </details>
+                        </td>
+                      </tr>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>

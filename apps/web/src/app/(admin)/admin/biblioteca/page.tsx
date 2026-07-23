@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { LibraryForm } from '@/components/admin/LibraryForm';
 import { RowActions } from '@/components/admin/RowActions';
@@ -38,21 +39,37 @@ export default async function AdminBibliotecaPage() {
                 </thead>
                 <tbody className="divide-y divide-line/60">
                   {list.map((it) => (
-                    <tr key={it.id} className="text-cream/80">
-                      <td className="px-5 py-3">
-                        <p className="font-medium text-cream">{it.title}</p>
-                        {it.category && <p className="text-xs text-cream/40">{it.category}</p>}
-                      </td>
-                      <td className="px-5 py-3">{LIBRARY_TYPE_LABELS[it.type as keyof typeof LIBRARY_TYPE_LABELS] ?? it.type}</td>
-                      <td className="px-5 py-3">
-                        {it.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
-                        {it.is_free && <span className="ml-1 text-xs text-gold">grátis</span>}
-                      </td>
-                      <td className="px-5 py-3 text-cream/50">{formatDate(it.created_at)}</td>
-                      <td className="px-5 py-3">
-                        <RowActions table="library_items" id={it.id} published={it.published} label="o item" />
-                      </td>
-                    </tr>
+                    <Fragment key={it.id}>
+                      <tr className="text-cream/80">
+                        <td className="px-5 py-3">
+                          <p className="font-medium text-cream">{it.title}</p>
+                          {it.category && <p className="text-xs text-cream/40">{it.category}</p>}
+                        </td>
+                        <td className="px-5 py-3">{LIBRARY_TYPE_LABELS[it.type as keyof typeof LIBRARY_TYPE_LABELS] ?? it.type}</td>
+                        <td className="px-5 py-3">
+                          {it.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
+                          {it.is_free && <span className="ml-1 text-xs text-gold">grátis</span>}
+                        </td>
+                        <td className="px-5 py-3 text-cream/50">{formatDate(it.created_at)}</td>
+                        <td className="px-5 py-3">
+                          <RowActions table="library_items" id={it.id} published={it.published} label="o item" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={5} className="px-5 pb-4 pt-0">
+                          <details>
+                            <summary className="cursor-pointer text-sm text-gold hover:underline">Editar item</summary>
+                            <div className="mt-4">
+                              <LibraryForm item={{
+                                id: it.id, title: it.title, type: it.type, description: it.description,
+                                category: it.category, file_url: it.file_url, storage_path: it.storage_path,
+                                is_free: it.is_free, published: it.published,
+                              }} />
+                            </div>
+                          </details>
+                        </td>
+                      </tr>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>

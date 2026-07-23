@@ -35,7 +35,7 @@ export function SectionTitle({ overline, title, subtitle, center }: { overline?:
     <div className={center ? 'text-center' : ''}>
       {overline && <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gold">{overline}</p>}
       <h2 className="font-serif text-3xl md:text-4xl text-cream">{title}</h2>
-      {subtitle && <p className="mt-3 max-w-2xl text-cream/60 {center ? 'mx-auto' : ''}">{subtitle}</p>}
+      {subtitle && <p className={clsx('mt-3 max-w-2xl text-cream/60', center && 'mx-auto')}>{subtitle}</p>}
     </div>
   );
 }

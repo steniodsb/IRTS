@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { MentorshipForm } from '@/components/admin/MentorshipForm';
 import { RowActions } from '@/components/admin/RowActions';
@@ -38,20 +39,35 @@ export default async function AdminMentoriasPage() {
                 </thead>
                 <tbody className="divide-y divide-line/60">
                   {list.map((m) => (
-                    <tr key={m.id} className="text-cream/80">
-                      <td className="px-5 py-3">
-                        <p className="font-medium text-cream">{m.title}</p>
-                        <p className="text-xs text-cream/40">/{m.slug}</p>
-                      </td>
-                      <td className="px-5 py-3">{m.format ?? '—'}</td>
-                      <td className="px-5 py-3">{formatBRL(m.price_cents)}</td>
-                      <td className="px-5 py-3">
-                        {m.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
-                      </td>
-                      <td className="px-5 py-3">
-                        <RowActions table="mentorships" id={m.id} published={m.published} label="a mentoria" />
-                      </td>
-                    </tr>
+                    <Fragment key={m.id}>
+                      <tr className="text-cream/80">
+                        <td className="px-5 py-3">
+                          <p className="font-medium text-cream">{m.title}</p>
+                          <p className="text-xs text-cream/40">/{m.slug}</p>
+                        </td>
+                        <td className="px-5 py-3">{m.format ?? '—'}</td>
+                        <td className="px-5 py-3">{formatBRL(m.price_cents)}</td>
+                        <td className="px-5 py-3">
+                          {m.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}
+                        </td>
+                        <td className="px-5 py-3">
+                          <RowActions table="mentorships" id={m.id} published={m.published} label="a mentoria" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={5} className="px-5 pb-4 pt-0">
+                          <details>
+                            <summary className="cursor-pointer text-sm text-gold hover:underline">Editar mentoria</summary>
+                            <div className="mt-4">
+                              <MentorshipForm mentorship={{
+                                id: m.id, title: m.title, slug: m.slug, description: m.description,
+                                format: m.format, cover_url: m.cover_url, price_cents: m.price_cents, published: m.published,
+                              }} />
+                            </div>
+                          </details>
+                        </td>
+                      </tr>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
