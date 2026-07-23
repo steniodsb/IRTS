@@ -1,5 +1,6 @@
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { EventForm } from '@/components/admin/EventForm';
+import { RowActions } from '@/components/admin/RowActions';
 import { createClient } from '@/lib/supabase/server';
 import { EVENT_TYPE_LABELS, formatDateTime } from '@irts/shared';
 
@@ -32,6 +33,7 @@ export default async function AdminAgendaPage() {
                     <th className="px-5 py-3 font-medium">Tipo</th>
                     <th className="px-5 py-3 font-medium">Início</th>
                     <th className="px-5 py-3 font-medium">Status</th>
+                    <th className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line/60">
@@ -44,6 +46,7 @@ export default async function AdminAgendaPage() {
                       <td className="px-5 py-3">{EVENT_TYPE_LABELS[ev.type as keyof typeof EVENT_TYPE_LABELS] ?? ev.type}</td>
                       <td className="px-5 py-3 text-cream/60">{formatDateTime(ev.starts_at)}</td>
                       <td className="px-5 py-3">{ev.published ? <Badge tone="success">Publicado</Badge> : <Badge>Rascunho</Badge>}</td>
+                      <td className="px-5 py-3"><RowActions table="events" id={ev.id} published={ev.published} label="o evento" /></td>
                     </tr>
                   ))}
                 </tbody>

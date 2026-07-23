@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Plus, Pencil, ExternalLink } from 'lucide-react';
 import { Card, Badge, EmptyState, LinkButton } from '@/components/ui';
+import { RowActions } from '@/components/admin/RowActions';
 import { createClient } from '@/lib/supabase/server';
 import { formatBRL } from '@irts/shared';
 
@@ -53,6 +54,7 @@ export default async function AdminCursosPage() {
                         <Link href={`/cursos/${c.slug}`} target="_blank" className="text-cream/50 hover:text-gold" title="Ver no site"><ExternalLink size={16} /></Link>
                       )}
                       <Link href={`/admin/cursos/${c.id}`} className="inline-flex items-center gap-1 text-gold hover:underline"><Pencil size={15} /> Editar</Link>
+                      <RowActions table="courses" id={c.id} published={c.published} label="o curso" />
                     </div>
                   </td>
                 </tr>

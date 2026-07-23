@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
-  LayoutDashboard, GraduationCap, BookOpen, Calendar, Users, UserCog,
-  ShoppingBag, Newspaper, Bell, Menu, X, ExternalLink,
+  LayoutDashboard, GraduationCap, BookOpen, BookMarked, Sparkles, Calendar, Users, UserCog,
+  ShoppingBag, CreditCard, Newspaper, Bell, Menu, X, ExternalLink,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
@@ -12,10 +12,13 @@ const ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/cursos', label: 'Cursos', icon: GraduationCap },
   { href: '/admin/biblioteca', label: 'Biblioteca', icon: BookOpen },
+  { href: '/admin/livros', label: 'Livros', icon: BookMarked },
+  { href: '/admin/mentorias', label: 'Mentorias', icon: Sparkles },
   { href: '/admin/agenda', label: 'Agenda', icon: Calendar },
   { href: '/admin/comunidade', label: 'Comunidade', icon: Users },
   { href: '/admin/usuarios', label: 'Usuários', icon: UserCog },
   { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingBag },
+  { href: '/admin/planos', label: 'Planos', icon: CreditCard },
   { href: '/admin/conteudo', label: 'Conteúdo', icon: Newspaper },
   { href: '/admin/notificacoes', label: 'Notificações', icon: Bell },
 ];

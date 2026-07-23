@@ -1,5 +1,6 @@
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { LibraryForm } from '@/components/admin/LibraryForm';
+import { RowActions } from '@/components/admin/RowActions';
 import { createClient } from '@/lib/supabase/server';
 import { LIBRARY_TYPE_LABELS, formatDate } from '@irts/shared';
 
@@ -32,6 +33,7 @@ export default async function AdminBibliotecaPage() {
                     <th className="px-5 py-3 font-medium">Tipo</th>
                     <th className="px-5 py-3 font-medium">Status</th>
                     <th className="px-5 py-3 font-medium">Criado</th>
+                    <th className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line/60">
@@ -47,6 +49,9 @@ export default async function AdminBibliotecaPage() {
                         {it.is_free && <span className="ml-1 text-xs text-gold">grátis</span>}
                       </td>
                       <td className="px-5 py-3 text-cream/50">{formatDate(it.created_at)}</td>
+                      <td className="px-5 py-3">
+                        <RowActions table="library_items" id={it.id} published={it.published} label="o item" />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
