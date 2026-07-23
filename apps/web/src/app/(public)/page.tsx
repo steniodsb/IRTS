@@ -64,7 +64,11 @@ export default async function HomePage() {
             {courses.map((c) => (
               <Link key={c.id} href={`/cursos/${c.slug}`}>
                 <Card className="h-full transition hover:border-gold/50">
-                  <div className="mb-4 aspect-video rounded-lg bg-gold-gradient/10 bg-surface-alt" />
+                  <div className="mb-4 aspect-video overflow-hidden rounded-lg bg-surface-alt">
+                    {c.cover_url
+                      ? <img src={c.cover_url} alt={c.title} className="h-full w-full object-cover" />
+                      : <div className="flex h-full w-full items-center justify-center bg-gold-gradient/10 font-serif text-3xl text-gold/40">IRTS</div>}
+                  </div>
                   {c.category && <Badge tone="gold">{c.category}</Badge>}
                   <h3 className="mt-3 font-serif text-xl text-cream">{c.title}</h3>
                   {c.subtitle && <p className="mt-1 text-sm text-cream/55">{c.subtitle}</p>}

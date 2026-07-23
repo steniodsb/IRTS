@@ -16,7 +16,7 @@ export default async function InicioPage() {
       supabase.from('announcements').select('*').eq('published', true).order('created_at', { ascending: false }).limit(3),
       supabase.from('events').select('*').eq('published', true).gte('starts_at', new Date().toISOString()).order('starts_at').limit(1).maybeSingle(),
       supabase.from('platform_updates').select('*').order('created_at', { ascending: false }).limit(3),
-      supabase.from('enrollments').select('*, courses(title, slug)').eq('user_id', user!.id).is('completed_at', null).order('last_activity_at', { ascending: false, nullsFirst: false }).limit(3),
+      supabase.from('enrollments').select('*, courses(title, slug, cover_url)').eq('user_id', user!.id).is('completed_at', null).order('last_activity_at', { ascending: false, nullsFirst: false }).limit(3),
     ]);
 
   const firstName = (user?.user_metadata?.full_name as string | undefined)?.split(' ')[0];
@@ -36,7 +36,11 @@ export default async function InicioPage() {
             {enrollments.map((e: any) => (
               <Link key={e.id} href={`/app/cursos/${e.courses?.slug}`}>
                 <Card className="h-full transition hover:border-gold/50">
-                  <div className="mb-3 aspect-video rounded-lg bg-surface-alt" />
+                  <div className="mb-3 aspect-video overflow-hidden rounded-lg bg-surface-alt">
+                    {e.courses?.cover_url
+                      ? <img src={e.courses.cover_url} alt="" className="h-full w-full object-cover" />
+                      : <div className="flex h-full w-full items-center justify-center font-serif text-2xl text-gold/30">IRTS</div>}
+                  </div>
                   <p className="font-medium text-cream">{e.courses?.title}</p>
                   <div className="mt-3"><Progress value={Number(e.progress_pct)} /></div>
                   <p className="mt-1.5 text-xs text-cream/50">{Number(e.progress_pct).toFixed(0)}% concluído</p>

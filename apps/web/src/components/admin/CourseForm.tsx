@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import { createClient } from '@/lib/supabase/client';
 
 type Course = {
   id?: string;
   title?: string; slug?: string; subtitle?: string | null; description?: string | null;
   category?: string | null; level?: string | null; instructor?: string | null;
+  cover_url?: string | null; trailer_url?: string | null;
   price_cents?: number; is_free?: boolean; published?: boolean;
 };
 
@@ -16,7 +18,7 @@ type Lesson = {
   id: string; module_id: string | null; title: string;
   video_provider: string; video_url: string | null; is_preview: boolean; sort_order: number;
 };
-type ModuleT = { id: string; title: string; sort_order: number };
+type ModuleT = { id: string; title: string; sort_order: number; cover_url?: string | null };
 
 function slugify(s: string) {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -38,6 +40,8 @@ export function CourseForm({
     category: course?.category ?? '',
     level: course?.level ?? 'iniciante',
     instructor: course?.instructor ?? '',
+    cover_url: course?.cover_url ?? null,
+    trailer_url: course?.trailer_url ?? null,
     price_cents: course?.price_cents ?? 0,
     is_free: course?.is_free ?? false,
     published: course?.published ?? false,
@@ -59,6 +63,8 @@ export function CourseForm({
       category: f.category || null,
       level: f.level || null,
       instructor: f.instructor || null,
+      cover_url: f.cover_url || null,
+      trailer_url: f.trailer_url || null,
       price_cents: Math.round(parseFloat(priceReais || '0') * 100) || 0,
       is_free: f.is_free,
       published: f.published,
@@ -100,9 +106,20 @@ export function CourseForm({
           <label className="label">Subtítulo</label>
           <input className="input" value={f.subtitle ?? ''} onChange={(e) => set('subtitle', e.target.value)} />
         </div>
-        <div>
-          <label className="label">Descrição</label>
-          <textarea className="input min-h-28" value={f.description ?? ''} onChange={(e) => set('description', e.target.value)} />
+        <div className="grid gap-4 md:grid-cols-2">
+          <ImageUpload
+            label="Capa do curso"
+            bucket="course-covers"
+            prefix="cursos"
+            value={f.cover_url}
+            onChange={(url) => set('cover_url', url)}
+          />
+          <div className="flex flex-col">
+            <label className="label">Descrição</label>
+            <textarea className="input min-h-28 flex-1" value={f.description ?? ''} onChange={(e) => set('description', e.target.value)} />
+            <label className="label mt-3">URL do trailer (opcional)</label>
+            <input className="input" placeholder="YouTube/Vimeo" value={f.trailer_url ?? ''} onChange={(e) => set('trailer_url', e.target.value)} />
+          </div>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           <div>
@@ -174,6 +191,11 @@ function CourseCurriculum({ courseId, modules, lessons }: { courseId: string; mo
     setBusy(false); router.refresh();
   }
 
+  async function setModuleCover(id: string, url: string | null) {
+    await supabase.from('modules').update({ cover_url: url }).eq('id', id);
+    router.refresh();
+  }
+
   const orphan = lessons.filter((l) => !l.module_id);
 
   return (
@@ -191,6 +213,16 @@ function CourseCurriculum({ courseId, modules, lessons }: { courseId: string; mo
           <div className="flex items-center justify-between">
             <h3 className="font-medium text-cream">{m.title}</h3>
             <button onClick={() => removeModule(m.id)} className="text-cream/40 hover:text-red-400" title="Excluir módulo"><Trash2 size={16} /></button>
+          </div>
+          <div className="mt-3 max-w-xs">
+            <ImageUpload
+              label="Capa do módulo"
+              bucket="course-covers"
+              prefix={`modulos/${m.id}`}
+              value={m.cover_url}
+              onChange={(url) => setModuleCover(m.id, url)}
+              aspect="aspect-[16/6]"
+            />
           </div>
           <LessonList courseId={courseId} moduleId={m.id} lessons={lessons.filter((l) => l.module_id === m.id)} />
         </div>
