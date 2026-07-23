@@ -43,3 +43,11 @@
 /* Scrollbar sutil */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: #2A2E36; border-radius: 8px; }
+
+/* Impressão de certificado: mostra só a área do certificado */
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; inset: 0; margin: 0; }
+  .no-print { display: none !important; }
+}

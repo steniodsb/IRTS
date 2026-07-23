@@ -216,6 +216,7 @@ function PerfilTab({ userId, userEmail, profile }: { userId: string; userEmail: 
 
 /* -------------------------------------------------------------- ASSINATURA */
 function AssinaturaTab({ subscription }: { subscription: any }) {
+  const supabase = createClient();
   const [canceling, setCanceling] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -224,11 +225,21 @@ function AssinaturaTab({ subscription }: { subscription: any }) {
     setCanceling(true);
     setMessage(null);
     try {
-      // Chamada placeholder — a edge function processa o cancelamento junto ao provedor.
-      await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/checkout?action=cancel`, { method: 'POST' });
-      setMessage('Solicitação de cancelamento enviada. Você receberá a confirmação por e-mail.');
+      // A edge function `checkout` (action=cancel) processa o cancelamento junto ao provedor.
+      // Exige o token do usuário (verify_jwt).
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/checkout?action=cancel`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.access_token ?? ''}`,
+        },
+        body: JSON.stringify({ action: 'cancel' }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setMessage('Solicitação de cancelamento enviada. Você manterá o acesso até o fim do período vigente.');
     } catch {
-      setMessage('Não foi possível processar agora. Tente novamente mais tarde.');
+      setMessage('Não foi possível processar agora. Tente novamente mais tarde ou fale com o suporte.');
     } finally {
       setCanceling(false);
     }

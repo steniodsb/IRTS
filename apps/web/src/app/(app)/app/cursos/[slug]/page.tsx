@@ -144,14 +144,12 @@ export default async function CoursePlayerPage({
             <p className="mt-1.5 text-xs text-cream/50">{done} de {total} aulas · {pct.toFixed(0)}%</p>
 
             {certificate && (
-              <a
-                href={certificate.pdf_url ?? '#'}
-                target={certificate.pdf_url ? '_blank' : undefined}
-                rel="noreferrer"
+              <Link
+                href={`/app/certificados/${certificate.code}`}
                 className="mt-4 flex items-center justify-center gap-2 rounded-xl border border-emerald-500/40 px-4 py-2.5 text-sm text-emerald-400 hover:bg-emerald-500/10"
               >
-                <Award size={16} /> Baixar certificado
-              </a>
+                <Award size={16} /> Ver certificado
+              </Link>
             )}
 
             {!hasEnrollment && !course.is_free && (
