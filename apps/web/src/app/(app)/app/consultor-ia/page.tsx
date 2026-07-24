@@ -1,9 +1,16 @@
 import { Bot } from 'lucide-react';
 import { IAChat } from '@/components/IAChat';
+import { MemberGate } from '@/components/MemberGate';
+import { createClient } from '@/lib/supabase/server';
+import { getMemberAccess } from '@/lib/access';
 
 export const metadata = { title: 'Consultor IA' };
 
-export default function ConsultorIAPage() {
+export default async function ConsultorIAPage() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isMember = await getMemberAccess(supabase, user?.id);
+
   return (
     <div className="flex h-[calc(100vh-8rem)] flex-col space-y-4">
       <div>
@@ -14,7 +21,15 @@ export default function ConsultorIAPage() {
           Tire dúvidas trabalhistas e sindicais com respostas fundamentadas na nossa base de conhecimento.
         </p>
       </div>
-      <IAChat />
+
+      {isMember ? (
+        <IAChat />
+      ) : (
+        <MemberGate
+          titulo="Assistente de IA — exclusivo para membros"
+          descricao="IA especializada em negociações sindicais para consultas, pesquisas e apoio técnico."
+        />
+      )}
     </div>
   );
 }

@@ -7,6 +7,16 @@ import { AuthProvider, useAuth } from '@/context/AuthProvider';
 import { Loading } from '@/components';
 import { colors } from '@/lib/theme';
 
+/** Header do tema claro: fundo branco, título azul-escuro, botão de voltar dourado. */
+const headerOptions = {
+  headerShown: true,
+  headerStyle: { backgroundColor: colors.surface },
+  headerTintColor: colors.gold,
+  headerTitleStyle: { color: colors.textPrimary },
+  headerShadowVisible: false,
+  contentStyle: { backgroundColor: colors.bg },
+};
+
 /**
  * Guarda de navegação: decide entre o grupo (auth) e o (tabs)
  * conforme a sessão. Executa quando loading/sessão/rota mudam.
@@ -36,60 +46,15 @@ function RootNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.black } }}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen
-        name="curso/[slug]"
-        options={{
-          headerShown: true,
-          title: 'Curso',
-          headerStyle: { backgroundColor: colors.ink },
-          headerTintColor: colors.gold,
-          headerTitleStyle: { color: colors.textPrimary },
-        }}
-      />
-      <Stack.Screen
-        name="comunidade/[id]"
-        options={{
-          headerShown: true,
-          title: 'Discussão',
-          headerStyle: { backgroundColor: colors.ink },
-          headerTintColor: colors.gold,
-          headerTitleStyle: { color: colors.textPrimary },
-        }}
-      />
-      <Stack.Screen
-        name="mais/agenda"
-        options={{
-          headerShown: true,
-          title: 'Agenda',
-          headerStyle: { backgroundColor: colors.ink },
-          headerTintColor: colors.gold,
-          headerTitleStyle: { color: colors.textPrimary },
-        }}
-      />
-      <Stack.Screen
-        name="mais/comunidade"
-        options={{
-          headerShown: true,
-          title: 'Comunidade',
-          headerStyle: { backgroundColor: colors.ink },
-          headerTintColor: colors.gold,
-          headerTitleStyle: { color: colors.textPrimary },
-        }}
-      />
-      <Stack.Screen
-        name="mais/conta"
-        options={{
-          headerShown: true,
-          title: 'Minha Conta',
-          headerStyle: { backgroundColor: colors.ink },
-          headerTintColor: colors.gold,
-          headerTitleStyle: { color: colors.textPrimary },
-        }}
-      />
+      <Stack.Screen name="curso/[slug]" options={{ ...headerOptions, title: 'Curso' }} />
+      <Stack.Screen name="comunidade/[id]" options={{ ...headerOptions, title: 'Discussão' }} />
+      <Stack.Screen name="mais/agenda" options={{ ...headerOptions, title: 'Agenda' }} />
+      <Stack.Screen name="mais/comunidade" options={{ ...headerOptions, title: 'Comunidade' }} />
+      <Stack.Screen name="mais/conta" options={{ ...headerOptions, title: 'Minha Conta' }} />
     </Stack>
   );
 }
@@ -98,7 +63,8 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <StatusBar style="light" />
+        {/* Tema claro: ícones escuros na barra de status. */}
+        <StatusBar style="dark" backgroundColor={colors.bg} />
         <RootNavigator />
       </AuthProvider>
     </SafeAreaProvider>
@@ -106,5 +72,5 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  loader: { flex: 1, backgroundColor: colors.black },
+  loader: { flex: 1, backgroundColor: colors.bg },
 });

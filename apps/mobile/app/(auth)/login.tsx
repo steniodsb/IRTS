@@ -110,7 +110,7 @@ function traduzErro(msg: string): string {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.black },
+  safe: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   content: { flexGrow: 1, justifyContent: 'center', padding: spacing.lg, gap: spacing.xl },
   header: { alignItems: 'center', gap: spacing.sm },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   fieldWrap: { gap: spacing.xs },
   fieldLabel: { color: colors.textSecondary, fontSize: typography.sizes.sm },
   input: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     borderRadius: radius.md,

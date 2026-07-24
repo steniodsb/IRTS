@@ -6,12 +6,13 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/brand/irts-logo.jpeg",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "backgroundColor": "#F7F5F0",
     "splash": {
       "image": "./assets/brand/irts-logo.jpeg",
       "resizeMode": "contain",
-      "backgroundColor": "#0A0A0A"
+      "backgroundColor": "#F7F5F0"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {

@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, GraduationCap, Award, BookOpen, BookMarked, Sparkles, Calendar, Users, UserCog,
-  ShoppingBag, CreditCard, Newspaper, Bell, Menu, X, ExternalLink,
+  ShoppingBag, CreditCard, Newspaper, Bell, BellRing, Wrench, Menu, X, ExternalLink,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
@@ -15,6 +15,8 @@ const ITEMS = [
   { href: '/admin/biblioteca', label: 'Biblioteca', icon: BookOpen },
   { href: '/admin/livros', label: 'Livros', icon: BookMarked },
   { href: '/admin/mentorias', label: 'Mentorias', icon: Sparkles },
+  { href: '/admin/alertas', label: 'Alertas', icon: BellRing },
+  { href: '/admin/ferramentas', label: 'Ferramentas', icon: Wrench },
   { href: '/admin/agenda', label: 'Agenda', icon: Calendar },
   { href: '/admin/comunidade', label: 'Comunidade', icon: Users },
   { href: '/admin/usuarios', label: 'Usuários', icon: UserCog },

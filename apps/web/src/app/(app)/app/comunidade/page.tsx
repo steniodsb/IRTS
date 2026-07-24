@@ -4,12 +4,15 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, Badge, EmptyState } from '@/components/ui';
 import { relativeTime, initials } from '@irts/shared';
 import { NewThreadForm } from '@/components/NewThreadForm';
+import { MemberGate } from '@/components/MemberGate';
+import { getMemberAccess } from '@/lib/access';
 
 export const metadata = { title: 'Hub de Inteligência' };
 
 export default async function ComunidadePage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const isMember = await getMemberAccess(supabase, user?.id);
 
   const [{ data: categories }, { data: threads }] = await Promise.all([
     supabase.from('forum_categories').select('*').order('sort_order'),
@@ -30,10 +33,17 @@ export default async function ComunidadePage() {
           </h1>
           <p className="mt-1 text-cream/50">Comunidade de discussão e acompanhamento de tendências sobre negociações coletivas de trabalho, relações sindicais e governança trabalhista.</p>
         </div>
-        <NewThreadForm categories={categories ?? []} userId={user!.id} />
+        {isMember && <NewThreadForm categories={categories ?? []} userId={user!.id} />}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-4">
+      {!isMember && (
+        <MemberGate
+          titulo="Hub de Inteligência — exclusivo para membros"
+          descricao="Comunidade para acompanhar tendências, discutir casos práticos e trocar experiências sobre negociações coletivas, relações sindicais e governança trabalhista."
+        />
+      )}
+
+      <div className={`grid gap-6 lg:grid-cols-4 ${isMember ? '' : 'pointer-events-none select-none opacity-40 blur-[2px]'}`}>
         {/* Categorias */}
         <aside className="space-y-2 lg:col-span-1">
           <p className="px-1 text-xs uppercase tracking-wide text-cream/40">Categorias</p>

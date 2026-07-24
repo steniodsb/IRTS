@@ -4,6 +4,7 @@ import { LinkButton } from '@/components/ui';
 import { createClient } from '@/lib/supabase/server';
 
 const NAV = [
+  { href: '/guias', label: 'Guias' },
   { href: '/cursos', label: 'Cursos' },
   { href: '/mentorias', label: 'Mentorias' },
   { href: '/livros', label: 'Livros' },

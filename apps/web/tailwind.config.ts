@@ -12,7 +12,8 @@ const config: Config = {
       colors: {
         // Dourado: DEFAULT tem contraste AA sobre off-white (usar em texto);
         // `light` é o tom vivo para fundos/gradientes.
-        gold: { DEFAULT: '#A98423', light: '#C9A227', bright: '#E5C767', dark: '#7C5F14' },
+        // DEFAULT é o tom de TEXTO (contraste AA sobre off-white); `light` é o dourado vivo
+        gold: { DEFAULT: '#8A6A1A', light: '#C9A227', bright: '#E5C767', dark: '#6B4F10' },
         // Azul escuro
         navy: { DEFAULT: '#101B2D', deep: '#0A1220', soft: '#16243B' },
         // Fundo da página (off-white)

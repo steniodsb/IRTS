@@ -12,7 +12,7 @@ interface ScreenProps {
   edges?: readonly Edge[];
 }
 
-/** Wrapper de tela: fundo preto + safe area. Rola por padrão. */
+/** Wrapper de tela: fundo off-white + safe area. Rola por padrão. */
 export function Screen({
   children,
   scroll = true,
@@ -54,7 +54,7 @@ export function Screen({
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.black },
+  safe: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   scrollContent: { flexGrow: 1, paddingBottom: spacing.xxl },
   padded: { padding: spacing.md, gap: spacing.md },

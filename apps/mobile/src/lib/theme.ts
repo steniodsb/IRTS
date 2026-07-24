@@ -1,8 +1,11 @@
 /**
  * Tema mobile IRTS — reexporta os tokens compartilhados e adiciona
  * helpers específicos de React Native (StyleSheet).
+ *
+ * Tema CLARO: fundo off-white (`colors.bg`), cards brancos (`colors.surface`),
+ * texto azul-escuro (`colors.textPrimary`) e dourado como acento.
  */
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet, type ViewStyle } from 'react-native';
 import { colors, radius, spacing, typography, brand } from '@irts/shared';
 
 export { colors, radius, spacing, typography, brand };
@@ -13,12 +16,40 @@ export const fonts = {
   sans: 'System',
 } as const;
 
+/**
+ * Sombras do tema claro: elevação leve.
+ * iOS usa `shadow*` (opacidade baixa, cor azul-escuro), Android usa `elevation`.
+ */
+export const shadows = {
+  card: Platform.select<ViewStyle>({
+    ios: {
+      shadowColor: colors.navy,
+      shadowOpacity: 0.06,
+      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 4 },
+    },
+    android: { elevation: 2 },
+    default: {},
+  }) as ViewStyle,
+  gold: Platform.select<ViewStyle>({
+    ios: {
+      shadowColor: colors.goldLight,
+      shadowOpacity: 0.28,
+      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 6 },
+    },
+    android: { elevation: 3 },
+    default: {},
+  }) as ViewStyle,
+} as const;
+
 export const theme = {
   colors,
   radius,
   spacing,
   typography,
   fonts,
+  shadows,
 } as const;
 
 /** Estilos base reutilizáveis entre telas. */
@@ -26,7 +57,13 @@ export const g = StyleSheet.create({
   flex1: { flex: 1 },
   screen: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.bg,
+  },
+  surface: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
   },
   content: {
     padding: spacing.md,

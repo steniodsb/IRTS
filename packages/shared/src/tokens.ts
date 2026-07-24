@@ -7,10 +7,12 @@
 export const colors = {
   // Acento (dourado). `gold` é o tom para TEXTO sobre fundo claro (contraste AA);
   // `goldLight` é o tom vivo para fundos/gradientes de botão.
-  gold: '#A98423',
+  // `gold` é usado em TEXTO sobre fundo claro → escurecido p/ atingir WCAG AA
+  // (~4.7:1 sobre #F7F5F0). O dourado vivo fica em `goldLight` (fundos/botões).
+  gold: '#8A6A1A',
   goldLight: '#C9A227',
   goldBright: '#E5C767',
-  goldDark: '#7C5F14',
+  goldDark: '#6B4F10',
 
   // Azul escuro (texto principal e blocos de destaque)
   navy: '#101B2D',

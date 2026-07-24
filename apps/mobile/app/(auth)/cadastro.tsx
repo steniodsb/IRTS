@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthProvider';
 import { GoldButton } from '@/components';
 import { Field } from './login';
-import { colors, spacing, radius, typography, brand } from '@/lib/theme';
+import { colors, spacing, radius, shadows, typography, brand } from '@/lib/theme';
 
 const logo = require('../../assets/brand/irts-logo.jpeg');
 
@@ -119,7 +119,7 @@ export default function CadastroScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.black },
+  safe: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   content: { flexGrow: 1, justifyContent: 'center', padding: spacing.lg, gap: spacing.xl },
   header: { alignItems: 'center', gap: spacing.sm },
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     padding: spacing.lg,
+    ...shadows.card,
   },
   doneTitle: { color: colors.gold, fontSize: typography.sizes.xl, fontWeight: '700' },
   doneText: { color: colors.textSecondary, fontSize: typography.sizes.sm, textAlign: 'center' },

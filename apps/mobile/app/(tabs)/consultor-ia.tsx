@@ -133,7 +133,7 @@ export default function ConsultorIaScreen() {
             onPress={send}
             disabled={!input.trim() || sending}
           >
-            <Ionicons name="send" size={18} color={colors.black} />
+            <Ionicons name="send" size={18} color={colors.navy} />
           </Pressable>
         </View>
       </KeyboardAvoidingView>
@@ -161,7 +161,7 @@ function Bubble({ message }: { message: ChatMessage }) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.black },
+  safe: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   header: {
     flexDirection: 'row',
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    backgroundColor: colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.border,
   },
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
   introTitle: { color: colors.textPrimary, fontSize: typography.sizes.lg, fontWeight: '600', textAlign: 'center' },
   introText: { color: colors.textSecondary, fontSize: typography.sizes.sm, textAlign: 'center' },
   bubble: { maxWidth: '85%', borderRadius: radius.lg, padding: spacing.md },
-  user: { alignSelf: 'flex-end', backgroundColor: colors.gold },
+  user: { alignSelf: 'flex-end', backgroundColor: colors.goldLight },
   assistant: {
     alignSelf: 'flex-start',
     backgroundColor: colors.surface,
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   bubbleText: { color: colors.textPrimary, fontSize: typography.sizes.base, lineHeight: 22 },
-  bubbleTextUser: { color: colors.black, fontWeight: '500' },
+  bubbleTextUser: { color: colors.navy, fontWeight: '500' },
   citations: { marginTop: spacing.sm, gap: 2, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border, paddingTop: spacing.sm },
   citationsLabel: { color: colors.gold, fontSize: typography.sizes.xs, fontWeight: '700', textTransform: 'uppercase' },
   citation: { color: colors.textSecondary, fontSize: typography.sizes.xs },
@@ -197,12 +198,12 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.border,
-    backgroundColor: colors.ink,
+    backgroundColor: colors.surface,
   },
   input: {
     flex: 1,
     maxHeight: 120,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.gold,
+    backgroundColor: colors.goldLight,
     alignItems: 'center',
     justifyContent: 'center',
   },

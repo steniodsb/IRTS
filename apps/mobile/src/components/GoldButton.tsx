@@ -45,7 +45,7 @@ export function GoldButton({
         {loading && (
           <ActivityIndicator
             size="small"
-            color={isOutline ? colors.gold : colors.black}
+            color={isOutline ? colors.gold : colors.navy}
             style={{ marginRight: spacing.sm }}
           />
         )}
@@ -66,11 +66,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inner: { flexDirection: 'row', alignItems: 'center' },
-  solid: { backgroundColor: colors.gold },
+  // Dourado vivo no fundo + texto azul-escuro: contraste alto sobre o tema claro.
+  solid: { backgroundColor: colors.goldLight },
   outline: { borderWidth: 1, borderColor: colors.gold, backgroundColor: 'transparent' },
   pressed: { opacity: 0.85 },
   disabled: { opacity: 0.5 },
   label: { fontSize: typography.sizes.base, fontWeight: '700' },
-  labelSolid: { color: colors.black },
+  labelSolid: { color: colors.navy },
   labelOutline: { color: colors.gold },
 });

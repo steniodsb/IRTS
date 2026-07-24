@@ -104,7 +104,7 @@ export default function ThreadDetailScreen() {
             onPress={sendReply}
             disabled={!reply.trim() || sending}
           >
-            <Ionicons name="send" size={18} color={colors.black} />
+            <Ionicons name="send" size={18} color={colors.navy} />
           </Pressable>
         </View>
       ) : (
@@ -118,7 +118,7 @@ export default function ThreadDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: colors.black },
+  flex: { flex: 1, backgroundColor: colors.bg },
   title: { color: colors.textPrimary, fontSize: typography.sizes.lg, fontWeight: '600', flexShrink: 1 },
   body: { color: colors.textSecondary, fontSize: typography.sizes.sm, lineHeight: 20, marginTop: spacing.xs },
   muted: { color: colors.textMuted, fontSize: typography.sizes.xs, marginTop: spacing.xs },
@@ -131,12 +131,12 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.border,
-    backgroundColor: colors.ink,
+    backgroundColor: colors.surface,
   },
   input: {
     flex: 1,
     maxHeight: 120,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.surfaceAlt,
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.gold,
+    backgroundColor: colors.goldLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -162,5 +162,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.border,
+    backgroundColor: colors.surface,
   },
 });

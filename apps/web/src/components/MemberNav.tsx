@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   Home, GraduationCap, BookOpen, Bot, Calendar, Users, User, LogOut, Menu, X, Shield, Bell,
+  Wrench, BellRing,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { createClient } from '@/lib/supabase/client';
@@ -13,7 +14,9 @@ const ITEMS = [
   { href: '/app', label: 'Início', icon: Home, exact: true },
   { href: '/app/cursos', label: 'Meus Cursos', icon: GraduationCap },
   { href: '/app/biblioteca', label: 'Biblioteca', icon: BookOpen },
+  { href: '/app/ferramentas', label: 'Ferramentas', icon: Wrench },
   { href: '/app/consultor-ia', label: 'Consultor IA', icon: Bot },
+  { href: '/app/alertas', label: 'Alertas', icon: BellRing },
   { href: '/app/agenda', label: 'Agenda', icon: Calendar },
   { href: '/app/comunidade', label: 'Hub de Inteligência', icon: Users },
   { href: '/app/conta', label: 'Minha Conta', icon: User },

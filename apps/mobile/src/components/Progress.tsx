@@ -16,11 +16,14 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: radius.pill,
     backgroundColor: colors.surfaceAlt,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
     overflow: 'hidden',
   },
   fill: {
     height: '100%',
     borderRadius: radius.pill,
-    backgroundColor: colors.gold,
+    // Dourado vivo: preenchimento legível sobre a trilha clara.
+    backgroundColor: colors.goldLight,
   },
 });

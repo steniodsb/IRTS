@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: radius.pill,
-    backgroundColor: 'rgba(201,162,39,0.15)',
+    backgroundColor: 'rgba(201,162,39,0.15)', // colors.goldLight @15%
     alignItems: 'center',
     justifyContent: 'center',
   },

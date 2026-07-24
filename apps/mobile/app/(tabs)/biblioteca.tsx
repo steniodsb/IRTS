@@ -70,7 +70,7 @@ export default function BibliotecaScreen() {
               <Text style={styles.muted}>{item.download_count} downloads</Text>
               {item.file_url ? (
                 <Pressable style={styles.dlBtn} onPress={() => handleDownload(item)}>
-                  <Ionicons name="download-outline" size={16} color={colors.black} />
+                  <Ionicons name="download-outline" size={16} color={colors.navy} />
                   <Text style={styles.dlText}>Baixar</Text>
                 </Pressable>
               ) : (
@@ -106,9 +106,9 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
-  chipActive: { backgroundColor: colors.gold, borderColor: colors.gold },
+  chipActive: { backgroundColor: colors.goldLight, borderColor: colors.goldLight },
   chipText: { color: colors.textSecondary, fontSize: typography.sizes.sm },
-  chipTextActive: { color: colors.black, fontWeight: '700' },
+  chipTextActive: { color: colors.navy, fontWeight: '700' },
   cardTitle: { color: colors.textPrimary, fontSize: typography.sizes.base, fontWeight: '600', flexShrink: 1 },
   cardBody: { color: colors.textSecondary, fontSize: typography.sizes.sm },
   muted: { color: colors.textMuted, fontSize: typography.sizes.xs },
@@ -118,10 +118,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: colors.gold,
+    backgroundColor: colors.goldLight,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: radius.pill,
   },
-  dlText: { color: colors.black, fontWeight: '700', fontSize: typography.sizes.sm },
+  dlText: { color: colors.navy, fontWeight: '700', fontSize: typography.sizes.sm },
 });

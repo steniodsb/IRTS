@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
-    backgroundColor: colors.black,
+    backgroundColor: colors.bg,
   },
   label: { color: colors.textSecondary, fontSize: typography.sizes.sm },
 });
