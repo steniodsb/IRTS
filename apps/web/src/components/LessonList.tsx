@@ -78,7 +78,7 @@ export function LessonList({
           <div key={mod.id} className="border-b border-line/60 last:border-b-0">
             <button
               onClick={() => toggleModule(mod.id)}
-              className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-cream hover:bg-white/5"
+              className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-cream hover:bg-navy/5"
             >
               <span>{mod.title}</span>
               <span className="text-xs text-cream/40">
@@ -97,7 +97,7 @@ export function LessonList({
                         onClick={() => selectLesson(lesson)}
                         disabled={!access}
                         className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition ${
-                          active ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-white/5'
+                          active ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5'
                         } ${!access ? 'cursor-not-allowed opacity-60' : ''}`}
                       >
                         {!access ? (

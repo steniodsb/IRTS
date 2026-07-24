@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import { createClient } from '@/lib/supabase/client';
 
 function useSaver(table: string, reset: () => void) {
@@ -26,15 +27,17 @@ export function NewsForm() {
   const [summary, setSummary] = useState('');
   const [url, setUrl] = useState('');
   const [source, setSource] = useState('');
-  const { saving, msg, insert } = useSaver('news', () => { setTitle(''); setSummary(''); setUrl(''); setSource(''); });
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
+  const { saving, msg, insert } = useSaver('news', () => { setTitle(''); setSummary(''); setUrl(''); setSource(''); setCoverUrl(null); });
   return (
-    <form onSubmit={(e) => { e.preventDefault(); insert({ title, summary: summary || null, url: url || null, source: source || null }); }}
+    <form onSubmit={(e) => { e.preventDefault(); insert({ title, summary: summary || null, url: url || null, source: source || null, cover_url: coverUrl || null }); }}
       className="card space-y-3 p-6">
       <h3 className="font-serif text-lg text-cream">Nova notícia</h3>
       <input className="input" placeholder="Título" value={title} required onChange={(e) => setTitle(e.target.value)} />
       <textarea className="input min-h-20" placeholder="Resumo" value={summary} onChange={(e) => setSummary(e.target.value)} />
       <input className="input" placeholder="URL (opcional)" value={url} onChange={(e) => setUrl(e.target.value)} />
       <input className="input" placeholder="Fonte (opcional)" value={source} onChange={(e) => setSource(e.target.value)} />
+      <ImageUpload bucket="public-assets" prefix="noticias" label="Imagem da notícia" value={coverUrl} onChange={setCoverUrl} />
       {msg && <p className={`text-sm ${msg.ok ? 'text-emerald-400' : 'text-red-400'}`}>{msg.text}</p>}
       <Button type="submit" disabled={saving}>{saving ? 'Salvando…' : <>Publicar <Plus size={16} /></>}</Button>
     </form>

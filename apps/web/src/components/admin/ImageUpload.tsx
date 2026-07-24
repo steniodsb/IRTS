@@ -65,7 +65,7 @@ export function ImageUpload({
         )}
         {value && !busy && (
           <button type="button" onClick={() => onChange(null)}
-            className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-cream/80 hover:text-red-400">
+            className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-white/90 hover:text-red-400">
             <X size={16} />
           </button>
         )}

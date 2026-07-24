@@ -15,7 +15,7 @@ const ITEMS = [
   { href: '/app/biblioteca', label: 'Biblioteca', icon: BookOpen },
   { href: '/app/consultor-ia', label: 'Consultor IA', icon: Bot },
   { href: '/app/agenda', label: 'Agenda', icon: Calendar },
-  { href: '/app/comunidade', label: 'Comunidade', icon: Users },
+  { href: '/app/comunidade', label: 'Hub de Inteligência', icon: Users },
   { href: '/app/conta', label: 'Minha Conta', icon: User },
 ];
 
@@ -49,7 +49,7 @@ export function MemberNav({
           href={it.href}
           onClick={() => setOpen(false)}
           className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-white/5 hover:text-cream'
+            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5 hover:text-cream'
           }`}
         >
           <it.icon size={18} /> {it.label}
@@ -57,12 +57,12 @@ export function MemberNav({
       ))}
       {isAdmin && (
         <Link href="/admin" onClick={() => setOpen(false)}
-          className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/70 transition hover:bg-white/5 hover:text-gold">
+          className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/70 transition hover:bg-navy/5 hover:text-gold">
           <Shield size={18} /> Administração
         </Link>
       )}
       <button onClick={signOut}
-        className="mt-auto flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/60 transition hover:bg-white/5 hover:text-red-400">
+        className="mt-auto flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/60 transition hover:bg-navy/5 hover:text-red-400">
         <LogOut size={18} /> Sair
       </button>
     </nav>
@@ -90,7 +90,7 @@ export function MemberNav({
           <div className="flex items-center gap-4">
             <Link href="/app/conta?tab=notificacoes" className="relative text-cream/70 hover:text-gold">
               <Bell size={20} />
-              {unread > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-ink">{unread}</span>}
+              {unread > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-white">{unread}</span>}
             </Link>
             <Link href="/app/conta" className="flex items-center gap-2">
               <span className="hidden text-sm text-cream/70 sm:block">{profile?.full_name ?? 'Minha conta'}</span>

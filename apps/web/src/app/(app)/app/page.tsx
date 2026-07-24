@@ -58,10 +58,16 @@ export default async function InicioPage() {
           {news && news.length > 0 ? news.map((n) => (
             <Card key={n.id}>
               <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-medium text-cream">{n.title}</p>
-                  {n.summary && <p className="mt-1 text-sm text-cream/55">{n.summary}</p>}
-                  <p className="mt-2 text-xs text-cream/40">{n.source} · {formatDate(n.published_at)}</p>
+                <div className="flex min-w-0 items-start gap-4">
+                  {n.cover_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={n.cover_url} alt="" className="h-16 w-16 shrink-0 rounded-lg object-cover sm:h-20 sm:w-20" />
+                  )}
+                  <div className="min-w-0">
+                    <p className="font-medium text-cream">{n.title}</p>
+                    {n.summary && <p className="mt-1 text-sm text-cream/55">{n.summary}</p>}
+                    <p className="mt-2 text-xs text-cream/40">{n.source} · {formatDate(n.published_at)}</p>
+                  </div>
                 </div>
                 {n.url && <Link href={n.url} target="_blank" className="shrink-0 text-sm text-gold hover:underline">Ler →</Link>}
               </div>

@@ -28,7 +28,7 @@ export default async function AdminConteudoPage() {
           <RecentList
             title="Notícias recentes"
             table="news"
-            items={(news ?? []).map((n: any) => ({ id: n.id, title: n.title, meta: formatDate(n.published_at), published: n.published }))}
+            items={(news ?? []).map((n: any) => ({ id: n.id, title: n.title, meta: formatDate(n.published_at), published: n.published, image: n.cover_url }))}
           />
         </div>
 
@@ -59,7 +59,7 @@ export default async function AdminConteudoPage() {
 function RecentList({ title, table, items }: {
   title: string;
   table: string;
-  items: { id: string; title: string; meta: string; badge?: string; published?: boolean }[];
+  items: { id: string; title: string; meta: string; badge?: string; published?: boolean; image?: string | null }[];
 }) {
   return (
     <Card className="p-0">
@@ -69,8 +69,14 @@ function RecentList({ title, table, items }: {
           {items.map((it) => (
             <li key={it.id} className="px-5 py-3">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm text-cream">{it.title}</p>
-                <div className="flex items-center gap-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  {it.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={it.image} alt="" className="h-10 w-10 shrink-0 rounded object-cover" />
+                  )}
+                  <p className="truncate text-sm text-cream">{it.title}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
                   {it.badge && <Badge tone={it.badge === 'warning' ? 'warning' : it.badge === 'success' ? 'success' : 'default'}>{it.badge}</Badge>}
                   <RowActions table={table} id={it.id} published={it.published} label="o item" />
                 </div>

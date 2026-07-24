@@ -5,7 +5,7 @@ import { Card, Badge, EmptyState } from '@/components/ui';
 import { relativeTime, initials } from '@irts/shared';
 import { NewThreadForm } from '@/components/NewThreadForm';
 
-export const metadata = { title: 'Comunidade' };
+export const metadata = { title: 'Hub de Inteligência' };
 
 export default async function ComunidadePage() {
   const supabase = createClient();
@@ -26,9 +26,9 @@ export default async function ComunidadePage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="flex items-center gap-2 font-serif text-3xl text-cream">
-            <Users size={26} className="text-gold" /> Comunidade
+            <Users size={26} className="text-gold" /> Hub de Inteligência
           </h1>
-          <p className="mt-1 text-cream/50">Troque experiências, tire dúvidas e faça networking com outros membros.</p>
+          <p className="mt-1 text-cream/50">Comunidade de discussão e acompanhamento de tendências sobre negociações coletivas de trabalho, relações sindicais e governança trabalhista.</p>
         </div>
         <NewThreadForm categories={categories ?? []} userId={user!.id} />
       </div>

@@ -9,9 +9,8 @@ export const metadata = { title: 'Certificado' };
 
 export default async function CertificadoPage({ params }: { params: { code: string } }) {
   const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
 
-  // RLS garante que só o dono do certificado consegue ler.
+  // RLS garante que só o dono do certificado (ou um admin) consegue ler.
   const { data: cert } = await supabase
     .from('certificates')
     .select('*, courses(title, instructor, duration_minutes)')
@@ -21,7 +20,7 @@ export default async function CertificadoPage({ params }: { params: { code: stri
   if (!cert) notFound();
 
   const { data: profile } = await supabase
-    .from('profiles').select('full_name').eq('id', user!.id).single();
+    .from('profiles').select('full_name').eq('id', (cert as any).user_id).maybeSingle();
 
   const course = (cert as any).courses;
   const studentName = profile?.full_name ?? 'Aluno(a)';

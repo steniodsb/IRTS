@@ -51,7 +51,7 @@ export function AccountTabs({
               key={t.key}
               href={`/app/conta?tab=${t.key}`}
               className={`flex shrink-0 items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition ${
-                active ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-white/5 hover:text-cream'
+                active ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5 hover:text-cream'
               }`}
             >
               <t.icon size={17} /> {t.label}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
-  LayoutDashboard, GraduationCap, BookOpen, BookMarked, Sparkles, Calendar, Users, UserCog,
+  LayoutDashboard, GraduationCap, Award, BookOpen, BookMarked, Sparkles, Calendar, Users, UserCog,
   ShoppingBag, CreditCard, Newspaper, Bell, Menu, X, ExternalLink,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
@@ -11,6 +11,7 @@ import { Logo } from '@/components/Logo';
 const ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/cursos', label: 'Cursos', icon: GraduationCap },
+  { href: '/admin/certificados', label: 'Certificados', icon: Award },
   { href: '/admin/biblioteca', label: 'Biblioteca', icon: BookOpen },
   { href: '/admin/livros', label: 'Livros', icon: BookMarked },
   { href: '/admin/mentorias', label: 'Mentorias', icon: Sparkles },
@@ -43,7 +44,7 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
           href={it.href}
           onClick={() => setOpen(false)}
           className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-white/5 hover:text-cream'
+            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5 hover:text-cream'
           }`}
         >
           <it.icon size={18} /> {it.label}
