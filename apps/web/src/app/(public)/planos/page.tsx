@@ -7,13 +7,15 @@ export const metadata = { title: 'Planos' };
 
 export default async function PlanosPage() {
   const supabase = createClient();
-  const { data: plans } = await supabase
-    .from('plans')
-    .select('*')
-    .eq('active', true)
-    .order('sort_order');
+  const [{ data: plans }, { data: launch }] = await Promise.all([
+    supabase.from('plans').select('*').eq('active', true).order('sort_order'),
+    supabase.from('site_settings').select('value').eq('key', 'launch_phase').maybeSingle(),
+  ]);
 
   const list = plans ?? [];
+  const launchPhase = (launch?.value ?? {}) as { enabled?: boolean; label?: string };
+  const isLaunch = !!launchPhase.enabled;
+  const launchLabel = launchPhase.label ?? 'Fase de Lançamento — Acesso Gratuito';
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16">
@@ -31,12 +33,16 @@ export default async function PlanosPage() {
               {p.highlight && <div className="mb-3"><Badge tone="gold">Mais popular</Badge></div>}
               <h3 className="font-serif text-2xl text-cream">{p.name}</h3>
               {p.description && <p className="mt-1 text-sm text-cream/50">{p.description}</p>}
-              <p className="mt-4 text-3xl font-semibold text-gold">
-                {p.price_cents === 0 ? 'Grátis' : formatBRL(p.price_cents)}
-                <span className="text-sm text-cream/40">
-                  {p.interval === 'month' ? '/mês' : p.interval === 'year' ? '/ano' : ''}
-                </span>
-              </p>
+              {isLaunch && p.price_cents > 0 ? (
+                <p className="mt-4 text-lg font-semibold text-gold">{launchLabel}</p>
+              ) : (
+                <p className="mt-4 text-3xl font-semibold text-gold">
+                  {p.price_cents === 0 ? 'Grátis' : formatBRL(p.price_cents)}
+                  <span className="text-sm text-cream/40">
+                    {p.interval === 'month' ? '/mês' : p.interval === 'year' ? '/ano' : ''}
+                  </span>
+                </p>
+              )}
               <ul className="mt-6 space-y-2.5 text-sm text-cream/60">
                 {((p.features as string[]) ?? []).map((f) => (
                   <li key={f} className="flex items-start gap-2">
@@ -45,7 +51,7 @@ export default async function PlanosPage() {
                 ))}
               </ul>
               <LinkButton href="/cadastro" variant={p.highlight ? 'gold' : 'outline'} className="mt-7 w-full">
-                {p.price_cents === 0 ? 'Criar conta' : 'Assinar'}
+                {isLaunch && p.price_cents > 0 ? 'Acessar grátis' : p.price_cents === 0 ? 'Criar conta' : 'Assinar'}
               </LinkButton>
             </Card>
           ))}

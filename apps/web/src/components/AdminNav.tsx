@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   LayoutDashboard, GraduationCap, Award, BookOpen, BookMarked, Sparkles, Calendar, Users, UserCog,
-  ShoppingBag, CreditCard, Newspaper, Bell, BellRing, Wrench, Menu, X, ExternalLink,
+  ShoppingBag, CreditCard, Newspaper, Bell, BellRing, Wrench, UserCircle, Menu, X, ExternalLink,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
@@ -23,6 +23,7 @@ const ITEMS = [
   { href: '/admin/pedidos', label: 'Pedidos', icon: ShoppingBag },
   { href: '/admin/planos', label: 'Planos', icon: CreditCard },
   { href: '/admin/conteudo', label: 'Conteúdo', icon: Newspaper },
+  { href: '/admin/sobre', label: 'Sobre / Bio', icon: UserCircle },
   { href: '/admin/notificacoes', label: 'Notificações', icon: Bell },
 ];
 

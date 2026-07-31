@@ -41,11 +41,6 @@ const RECURSOS = [
     desc: 'Modelos, checklists, e-books, guias, cláusulas comentadas e materiais de apoio.',
   },
   {
-    icon: Bot, acesso: 'membros' as const,
-    titulo: 'Assistente de IA',
-    desc: 'IA especializada em negociações sindicais para consultas, pesquisas e apoio técnico.',
-  },
-  {
     icon: Wrench, acesso: 'membros' as const,
     titulo: 'Ferramentas',
     desc: 'Calculadoras, simuladores, matrizes de negociação, cronogramas e recursos práticos.',
@@ -55,22 +50,37 @@ const RECURSOS = [
     titulo: 'Alertas Inteligentes',
     desc: 'Avisos sobre publicação de convenções coletivas, decisões relevantes e mudanças legislativas que impactam negociações.',
   },
+];
+
+/** Destaques em azul-marinho (mais autoridade): Mentoria e Assistente de IA. */
+const DESTAQUES = [
   {
-    icon: Video, acesso: 'alunos' as const,
+    icon: Video, acesso: 'Alunos',
     titulo: 'Cursos e Mentorias',
-    desc: 'Cursos, mentorias e treinamentos especializados.',
+    desc: 'Cursos, mentorias e treinamentos especializados para elevar sua atuação e o seu posicionamento estratégico.',
+    cta: 'Ver opções', href: '/mentorias',
+  },
+  {
+    icon: Bot, acesso: 'Membros e Alunos',
+    titulo: 'Assistente de IA',
+    desc: 'Inteligência artificial treinada em relações trabalhistas e sindicais. Tire dúvidas, pesquise normas e decisões e receba orientação estratégica.',
+    cta: 'Conhecer', href: '/cadastro',
   },
 ];
 
 export default async function HomePage() {
   const supabase = createClient();
-  const [{ data: courses }, { data: plans }, { data: media }] = await Promise.all([
+  const [{ data: courses }, { data: plans }, { data: media }, { data: launch }] = await Promise.all([
     supabase.from('courses').select('*').eq('published', true).order('sort_order').limit(6),
     supabase.from('plans').select('*').eq('active', true).order('sort_order'),
     supabase.from('site_settings').select('value').eq('key', 'home_media').maybeSingle(),
+    supabase.from('site_settings').select('value').eq('key', 'launch_phase').maybeSingle(),
   ]);
 
   const homeMedia = (media?.value ?? {}) as { type?: string; url?: string; caption?: string };
+  const launchPhase = (launch?.value ?? {}) as { enabled?: boolean; label?: string };
+  const isLaunch = !!launchPhase.enabled;
+  const launchLabel = launchPhase.label ?? 'Fase de Lançamento — Acesso Gratuito';
 
   return (
     <>
@@ -129,11 +139,35 @@ export default async function HomePage() {
         <SectionTitle
           center
           overline="A plataforma"
-          title="O que é aberto e o que é exclusivo"
+          title="O que é aberto e o que é exclusivo?"
           subtitle="Parte do conteúdo é livre para todos. O acervo estratégico, as ferramentas e a inteligência aplicada são exclusivos de membros e alunos."
         />
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Destaques em azul-marinho: Mentoria e Assistente de IA */}
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {DESTAQUES.map((d) => (
+            <div key={d.titulo} className="section-navy relative overflow-hidden rounded-2xl p-8">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(201,162,39,0.22),transparent_60%)]" />
+              <div className="relative">
+                <div className="flex items-center justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-gold-bright">
+                    <d.icon size={24} />
+                  </span>
+                  <span className="rounded-full border border-gold/50 px-3 py-1 text-xs text-gold-bright">
+                    Exclusivo · {d.acesso}
+                  </span>
+                </div>
+                <h3 className="mt-5 font-serif text-2xl text-white">{d.titulo}</h3>
+                <p className="mt-2 text-sm text-white/70">{d.desc}</p>
+                <Link href={d.href} className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-bright hover:gap-2.5">
+                  {d.cta} <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {RECURSOS.map((r) => {
             const acesso = ACESSO[r.acesso];
             return (
@@ -193,15 +227,19 @@ export default async function HomePage() {
               <Card key={p.id} className={p.highlight ? 'border-gold shadow-gold' : ''}>
                 {p.highlight && <Badge tone="gold">Mais popular</Badge>}
                 <h3 className="mt-3 font-serif text-2xl text-cream">{p.name}</h3>
-                <p className="mt-2 text-3xl font-semibold text-gold">
-                  {p.price_cents === 0 ? 'Grátis' : formatBRL(p.price_cents)}
-                  <span className="text-sm text-cream/40">{p.interval === 'month' ? '/mês' : p.interval === 'year' ? '/ano' : ''}</span>
-                </p>
+                {isLaunch && p.price_cents > 0 ? (
+                  <p className="mt-2 text-lg font-semibold text-gold">{launchLabel}</p>
+                ) : (
+                  <p className="mt-2 text-3xl font-semibold text-gold">
+                    {p.price_cents === 0 ? 'Grátis' : formatBRL(p.price_cents)}
+                    <span className="text-sm text-cream/40">{p.interval === 'month' ? '/mês' : p.interval === 'year' ? '/ano' : ''}</span>
+                  </p>
+                )}
                 <ul className="mt-5 space-y-2 text-sm text-cream/60">
                   {(p.features as string[]).map((f) => <li key={f}>• {f}</li>)}
                 </ul>
                 <LinkButton href="/cadastro" variant={p.highlight ? 'gold' : 'outline'} className="mt-6 w-full">
-                  {p.price_cents === 0 ? 'Criar conta' : 'Assinar'}
+                  {isLaunch && p.price_cents > 0 ? 'Acessar grátis' : p.price_cents === 0 ? 'Criar conta' : 'Assinar'}
                 </LinkButton>
               </Card>
             ))}
