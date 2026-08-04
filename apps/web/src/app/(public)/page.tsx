@@ -77,7 +77,9 @@ export default async function HomePage() {
     supabase.from('site_settings').select('value').eq('key', 'launch_phase').maybeSingle(),
   ]);
 
-  const homeMedia = (media?.value ?? {}) as { type?: string; url?: string; caption?: string };
+  const homeMedia = (media?.value ?? {}) as { type?: string; url?: string; caption?: string; poster?: string };
+  const isVideoFile = !!homeMedia.url && (homeMedia.type === 'mp4' || /\.(mp4|webm|mov)$/i.test(homeMedia.url));
+  const isEmbed = !!homeMedia.url && !isVideoFile && homeMedia.type === 'video';
   const launchPhase = (launch?.value ?? {}) as { enabled?: boolean; label?: string };
   const isLaunch = !!launchPhase.enabled;
   const launchLabel = launchPhase.label ?? 'Fase de Lançamento — Acesso Gratuito';
@@ -105,7 +107,20 @@ export default async function HomePage() {
       {/* INSTITUCIONAL — imagem ou vídeo sobre o IRTS */}
       <section className="mx-auto max-w-5xl px-4 pb-4">
         <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-card">
-          {homeMedia.url && homeMedia.type === 'video' ? (
+          {isVideoFile ? (
+            <div className="flex justify-center bg-navy-gradient py-6">
+              <video
+                controls
+                playsInline
+                preload="none"
+                poster={homeMedia.poster || undefined}
+                className="max-h-[70vh] w-auto max-w-full rounded-xl"
+              >
+                <source src={homeMedia.url} type="video/mp4" />
+                Seu navegador não suporta vídeo.
+              </video>
+            </div>
+          ) : isEmbed ? (
             <div className="aspect-video w-full">
               <iframe
                 src={homeMedia.url}
