@@ -67,8 +67,8 @@ export default async function GuiasPage() {
       <div className="card mt-12 flex flex-col items-center gap-4 p-8 text-center">
         <h2 className="font-serif text-2xl text-cream">Quer o acervo completo?</h2>
         <p className="max-w-2xl text-cream/60">
-          A Biblioteca técnica completa, o Hub de conteúdo, as Ferramentas de negociação e o
-          Assistente de IA são exclusivos para membros. Crie sua conta e comece agora.
+          A Biblioteca técnica completa, o Hub de conteúdo, as Ferramentas de negociação e os
+          Alertas Inteligentes são exclusivos para membros. Crie sua conta e comece agora.
         </p>
         <LinkButton href="/cadastro" variant="gold">Criar conta</LinkButton>
       </div>

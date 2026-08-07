@@ -5,7 +5,6 @@ export const MEMBER_MENUS = [
   { key: 'inicio',     label: 'Início',       icon: 'home',       route: '/app' },
   { key: 'cursos',     label: 'Meus Cursos',  icon: 'graduation', route: '/app/cursos' },
   { key: 'biblioteca', label: 'Biblioteca',   icon: 'book',       route: '/app/biblioteca' },
-  { key: 'ia',         label: 'Consultor IA', icon: 'robot',      route: '/app/consultor-ia' },
   { key: 'agenda',     label: 'Agenda',       icon: 'calendar',   route: '/app/agenda' },
   { key: 'comunidade', label: 'Comunidade',   icon: 'users',      route: '/app/comunidade' },
   { key: 'conta',      label: 'Minha Conta',  icon: 'user',       route: '/app/conta' },

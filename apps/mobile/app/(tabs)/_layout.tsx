@@ -45,15 +45,6 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="consultor-ia"
-        options={{
-          title: 'IA',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubbles" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="mais"
         options={{
           title: 'Mais',

@@ -27,7 +27,7 @@ function resolveSiteUrl(): string {
 export const metadata: Metadata = {
   title: { default: 'IRTS Academy — Relações Trabalhistas e Sindicais', template: '%s · IRTS Academy' },
   description:
-    'Cursos, biblioteca técnica, mentorias e Consultor IA em relações trabalhistas e sindicais.',
+    'Cursos, biblioteca técnica, mentorias e ferramentas de negociação em relações trabalhistas e sindicais.',
   metadataBase: new URL(resolveSiteUrl()),
 };
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {
-  ArrowRight, Download, Newspaper, MessagesSquare, BookOpen, Video, Bot,
+  ArrowRight, Download, Newspaper, MessagesSquare, BookOpen, Video,
   CalendarDays, Wrench, BellRing, PlayCircle, Globe, Lock, GraduationCap,
 } from 'lucide-react';
 import { LinkButton, SectionTitle, Card, Badge } from '@/components/ui';
@@ -52,19 +52,13 @@ const RECURSOS = [
   },
 ];
 
-/** Destaques em azul-marinho (mais autoridade): Mentoria e Assistente de IA. */
+/** Destaque em azul-marinho (mais autoridade). */
 const DESTAQUES = [
   {
     icon: Video, acesso: 'Alunos',
     titulo: 'Cursos e Mentorias',
     desc: 'Cursos, mentorias e treinamentos especializados para elevar sua atuação e o seu posicionamento estratégico.',
     cta: 'Ver opções', href: '/mentorias',
-  },
-  {
-    icon: Bot, acesso: 'Membros e Alunos',
-    titulo: 'Assistente de IA',
-    desc: 'Inteligência artificial treinada em relações trabalhistas e sindicais. Tire dúvidas, pesquise normas e decisões e receba orientação estratégica.',
-    cta: 'Conhecer', href: '/cadastro',
   },
 ];
 
@@ -158,8 +152,8 @@ export default async function HomePage() {
           subtitle="Parte do conteúdo é livre para todos. O acervo estratégico, as ferramentas e a inteligência aplicada são exclusivos de membros e alunos."
         />
 
-        {/* Destaques em azul-marinho: Mentoria e Assistente de IA */}
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
+        {/* Destaque em azul-marinho: Cursos e Mentorias */}
+        <div className="mt-10 grid gap-5">
           {DESTAQUES.map((d) => (
             <div key={d.titulo} className="section-navy relative overflow-hidden rounded-2xl p-8">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(201,162,39,0.22),transparent_60%)]" />

@@ -54,7 +54,7 @@ export default async function PublicLayout({ children }: { children: React.React
             <Logo withText />
             <p className="mt-4 max-w-sm text-sm text-cream/50">
               Inteligência em Relações Trabalhistas e Sindicais. Formação, biblioteca técnica,
-              mentorias e Consultor IA para profissionais e sindicatos.
+              mentorias e ferramentas de negociação para profissionais e sindicatos.
             </p>
           </div>
           <div>

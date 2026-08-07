@@ -47,11 +47,9 @@ Criados automaticamente pela migration `...400_storage.sql`:
 
 ```bash
 supabase secrets set \
-  ANTHROPIC_API_KEY=... \
-  IA_MODEL=claude-sonnet-5 \
-  EMBEDDINGS_PROVIDER=openai \
-  OPENAI_API_KEY=... \
-  ASAAS_API_KEY=... \n  ASAAS_WEBHOOK_TOKEN=... \n  RESEND_API_KEY=... \
+  ASAAS_API_KEY=... \
+  ASAAS_WEBHOOK_TOKEN=... \
+  RESEND_API_KEY=... \
   EMAIL_FROM="IRTS Academy <no-reply@irts.com.br>" \
   OWNER_NOTIFY_EMAIL=newton@exemplo.com.br \
   NEXT_PUBLIC_SITE_URL=https://app.irts.com.br
@@ -60,8 +58,6 @@ supabase secrets set \
 
 ## 6. Deploy das Edge Functions
 ```bash
-supabase functions deploy consultor-ia
-supabase functions deploy ingest-embeddings
 supabase functions deploy asaas-webhook
 supabase functions deploy checkout
 supabase functions deploy sign-asset

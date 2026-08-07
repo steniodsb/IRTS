@@ -21,13 +21,9 @@ enable_confirmations = false   # PENDENTE: ativar confirmação de e-mail em pro
 enabled = true
 file_size_limit = "5368709120"  # 5GB (vídeos de curso)
 
-[functions.consultor-ia]
-verify_jwt = true
 [functions.asaas-webhook]
 verify_jwt = false
 [functions.checkout]
-verify_jwt = true
-[functions.ingest-embeddings]
 verify_jwt = true
 [functions.sign-asset]
 verify_jwt = true

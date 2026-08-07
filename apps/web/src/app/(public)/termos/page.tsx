@@ -24,7 +24,7 @@ export default function TermosPage() {
         </section>
         <section>
           <h2 className="font-serif text-2xl text-cream">4. Propriedade intelectual</h2>
-          <p className="mt-3">Todo o conteúdo (cursos, materiais, textos, marcas e Consultor IA) é protegido por direitos autorais e pertence ao IRTS ou a seus licenciadores. É proibida a reprodução, distribuição ou revenda sem autorização.</p>
+          <p className="mt-3">Todo o conteúdo (cursos, materiais, textos e marcas) é protegido por direitos autorais e pertence ao IRTS ou a seus licenciadores. É proibida a reprodução, distribuição ou revenda sem autorização.</p>
         </section>
         <section>
           <h2 className="font-serif text-2xl text-cream">5. Uso adequado</h2>
@@ -32,7 +32,7 @@ export default function TermosPage() {
         </section>
         <section>
           <h2 className="font-serif text-2xl text-cream">6. Limitação de responsabilidade</h2>
-          <p className="mt-3">O conteúdo tem caráter educativo e informativo, não constituindo aconselhamento jurídico individualizado. As respostas do Consultor IA podem conter imprecisões e devem ser validadas por profissional habilitado.</p>
+          <p className="mt-3">O conteúdo tem caráter educativo e informativo, não constituindo aconselhamento jurídico individualizado.</p>
         </section>
         <section>
           <h2 className="font-serif text-2xl text-cream">7. Alterações</h2>

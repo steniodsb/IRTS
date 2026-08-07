@@ -249,7 +249,7 @@ function AssinaturaTab({ subscription }: { subscription: any }) {
     return (
       <EmptyState
         title="Você não tem uma assinatura ativa"
-        description="Assine um plano para desbloquear cursos, biblioteca e o Consultor IA."
+        description="Assine um plano para desbloquear cursos, biblioteca e ferramentas."
         action={<LinkButton href="/planos" variant="gold" className="mt-2">Ver planos</LinkButton>}
       />
     );

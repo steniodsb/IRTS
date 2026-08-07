@@ -16,7 +16,6 @@ Uma única base de conhecimento (Supabase) alimentando **três clientes**:
 🏠 **Início** · notícias trabalhistas, novos vídeos, próxima live, avisos, atualizações
 🎓 **Meus Cursos** · cursos adquiridos, progresso, continuar assistindo, certificados
 📚 **Biblioteca** · e-books, modelos, checklists, ACTs, CCTs, políticas, jurisprudência comentada
-🤖 **Consultor IA** · perguntas respondidas **apenas** com o conteúdo da plataforma (RAG + Claude)
 📅 **Agenda** · mentorias, lives, eventos, webinars
 👥 **Comunidade** · fórum, perguntas, networking
 👤 **Minha Conta** · dados, foto, senha, plano, assinatura, pagamentos, dados fiscais, downloads, cancelar
@@ -36,7 +35,7 @@ Também: **área pública** (bio, cursos, mentorias, livros físicos, planos), *
 │   └── shared/       # tipos, tokens de marca, helpers, client Supabase
 ├── supabase/
 │   ├── migrations/   # schema, RLS, triggers, storage, seed (SQL portável)
-│   ├── functions/    # edge functions (Consultor IA, Asaas, notificações)
+│   ├── functions/    # edge functions (Asaas, arquivos, notificações)
 │   └── config.toml
 ├── docs/             # ARQUITETURA, DEPLOY, PENDENCIAS, CONFIGURACAO-SUPABASE
 └── _client/          # contrato + material do cliente (NÃO versionado)
@@ -63,7 +62,7 @@ pnpm dev:mobile               # Expo — abrir no Expo Go / simulador
 ```
 
 > ⚠️ Antes de tudo funcionar 100%, veja **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)** — há chaves de API
-> e contas de loja que **dependem do cliente** (Anthropic, Asaas, Apple/Google, etc.).
+> e contas de loja que **dependem do cliente** (Asaas, Resend, Apple/Google, etc.).
 
 ## Documentação
 

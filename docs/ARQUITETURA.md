@@ -14,11 +14,10 @@
                     │  Postgres + RLS  │
                     │  Auth · Storage  │
                     │  Edge Functions  │
-                    │  pgvector (RAG)  │
                     └────────┬─────────┘
                              │
-     ┌───────────────────────┼───────────────────────┐
-     │ Anthropic (Claude)    │ Asaas (pagamentos)    │ Resend (e-mail)
+     ┌───────────────────────┴───────────────────────┐
+     │ Asaas (pagamentos)    │ Resend (e-mail)       │
      └───────────────────────┴───────────────────────┘
 ```
 
@@ -51,7 +50,6 @@ Operações privilegiadas (webhooks, IA, notificações) rodam em **Edge Functio
 | Início | `news`, `announcements`, `platform_updates` |
 | Loja | `mentorships`, `books`, `orders`, `order_items` |
 | Notificações | `notifications` (audience owner/user) |
-| Consultor IA | `ai_documents`, `ai_chunks` (vector 1536), `ai_conversations`, `ai_messages` |
 
 Detalhe completo em `supabase/migrations/20260722000100_schema.sql`.
 
@@ -73,13 +71,6 @@ Detalhe completo em `supabase/migrations/20260722000100_schema.sql`.
 - Nova resposta no fórum → notifica o dono.
 - `flag_abandoned_courses()` (chamado pela função `cron-abandoned`) → marca "abandono" (sem atividade
   há 14 dias e < 100%) e **notifica o dono**.
-
-## Consultor IA (RAG)
-
-1. Admin envia conteúdo → `ingest-embeddings` divide em trechos e gera embeddings (pgvector).
-2. Usuário pergunta → `consultor-ia` embeda a pergunta, busca trechos por similaridade
-   (`match_ai_chunks`), monta o contexto e chama o **Claude** com instrução de responder **apenas**
-   com esse conteúdo. Histórico salvo em `ai_conversations`/`ai_messages` com **citações**.
 
 ## Pagamentos
 

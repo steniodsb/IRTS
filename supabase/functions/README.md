@@ -5,8 +5,6 @@ Funções Supabase (Deno + TypeScript). Cada função vive em
 
 | Função              | verify_jwt | O que faz                                                        |
 | ------------------- | ---------- | ---------------------------------------------------------------- |
-| `consultor-ia`      | true       | Consultor IA (RAG): embed → busca semântica → Claude → histórico |
-| `ingest-embeddings` | true       | Ingestão admin da base de conhecimento (chunk + embeddings)      |
 | `asaas-webhook`     | false      | Recebe eventos de cobrança do Asaas (pagamentos, assinaturas)    |
 | `checkout`          | true       | Cobranças e assinaturas no Asaas (PIX/boleto/cartão) + cancelamento |
 | `sign-asset`        | true       | URLs assinadas para vídeos, biblioteca e certificados            |
@@ -21,9 +19,6 @@ runtime das Edge Functions — não precisam ser definidas manualmente.
 
 | Env var                     | Usada por                          | Status                    |
 | --------------------------- | ---------------------------------- | ------------------------- |
-| `OPENAI_API_KEY`            | consultor-ia, ingest-embeddings    | **PENDENTE** (chave real) |
-| `ANTHROPIC_API_KEY`         | consultor-ia                       | **PENDENTE** (chave real) |
-| `IA_MODEL`                  | consultor-ia (default claude-sonnet-5) | opcional              |
 | `ASAAS_API_KEY`             | checkout, asaas-webhook            | fornecida (produção)      |
 | `ASAAS_ENV`                 | checkout (força sandbox/production)| opcional                  |
 | `ASAAS_WEBHOOK_TOKEN`       | asaas-webhook                      | fornecida                 |
@@ -40,9 +35,6 @@ runtime das Edge Functions — não precisam ser definidas manualmente.
 
 ```bash
 # Uma a uma:
-supabase secrets set OPENAI_API_KEY=sk-...
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
-supabase secrets set IA_MODEL=claude-sonnet-5
 supabase secrets set ASAAS_API_KEY='$aact_prod_...'
 supabase secrets set ASAAS_WEBHOOK_TOKEN=...
 supabase secrets set RESEND_API_KEY=re_...
@@ -58,15 +50,13 @@ supabase secrets set --env-file ./.env
 
 ```bash
 # Uma função:
-supabase functions deploy consultor-ia
-
 # O webhook do Asaas precisa de verify_jwt=false (já está no config.toml,
 # mas pode-se forçar na linha de comando):
 supabase functions deploy asaas-webhook --no-verify-jwt
 supabase functions deploy cron-abandoned --no-verify-jwt
 
 # Todas:
-supabase functions deploy consultor-ia ingest-embeddings asaas-webhook checkout sign-asset cron-abandoned
+supabase functions deploy asaas-webhook checkout sign-asset cron-abandoned
 ```
 
 ## Testar localmente
@@ -74,10 +64,10 @@ supabase functions deploy consultor-ia ingest-embeddings asaas-webhook checkout 
 ```bash
 supabase functions serve --env-file ./.env
 # então:
-curl -i http://localhost:54321/functions/v1/consultor-ia \
+curl -i "http://localhost:54321/functions/v1/checkout?action=status" \
   -H "Authorization: Bearer <JWT_DO_USUARIO>" \
   -H "Content-Type: application/json" \
-  -d '{"question":"O que é uma CCT?"}'
+  -d '{"action":"status"}'
 ```
 
 ## Notas de integração

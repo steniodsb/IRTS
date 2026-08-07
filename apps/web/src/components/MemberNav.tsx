@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-  Home, GraduationCap, BookOpen, Bot, Calendar, Users, User, LogOut, Menu, X, Shield, Bell,
+  Home, GraduationCap, BookOpen, Calendar, Users, User, LogOut, Menu, Shield, Bell,
   Wrench, BellRing,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
@@ -16,7 +16,6 @@ const ITEMS = [
   { href: '/app/cursos', label: 'Meus Cursos', icon: GraduationCap },
   { href: '/app/biblioteca', label: 'Biblioteca', icon: BookOpen },
   { href: '/app/ferramentas', label: 'Ferramentas', icon: Wrench },
-  { href: '/app/consultor-ia', label: 'Consultor IA', icon: Bot },
   { href: '/app/alertas', label: 'Alertas', icon: BellRing },
   { href: '/app/agenda', label: 'Agenda', icon: Calendar },
   { href: '/app/comunidade', label: 'Hub de Inteligência', icon: Users },
@@ -88,7 +87,8 @@ export function MemberNav({
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="surface-navy sticky top-0 z-30 flex items-center justify-between border-b border-line bg-ink/90 px-4 py-3 backdrop-blur">
+        {/* Barra superior acompanha o tema (claro/escuro); só a sidebar é navy. */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/60 bg-ink/85 px-4 py-3 backdrop-blur">
           <button className="lg:hidden text-cream" onClick={() => setOpen(true)}><Menu size={22} /></button>
           <div className="hidden lg:block" />
           <div className="flex items-center gap-4">

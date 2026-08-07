@@ -12,7 +12,6 @@ export function MemberGate({
     'Hub de Inteligência e casos práticos',
     'Biblioteca completa (ACTs, CCTs, modelos e checklists)',
     'Ferramentas: calculadoras, simuladores e matrizes',
-    'Assistente de IA especializado',
     'Alertas inteligentes',
   ],
 }: {

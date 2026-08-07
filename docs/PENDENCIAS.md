@@ -1,13 +1,14 @@
 # PENDÊNCIAS — o que preciso de você (Newton) para colocar 100% no ar
 
-> A estrutura completa (web, iOS/Android, banco de dados, painel admin, Consultor IA, pagamentos,
+> A estrutura completa (web, iOS/Android, banco de dados, painel admin, pagamentos,
 > notificações) **já está construída**. O que falta abaixo são **contas, chaves e conteúdos** que,
 > pelo contrato (Anexo I / Cláusula 9.3), são fornecidos pelo CONTRATANTE. Enquanto não chegarem,
 > deixei tudo funcionando com dados de exemplo e degradação clara (sem quebrar).
 
 ## 🧭 Decisões e prioridades (atualizado 2026-07-22)
 
-- **Consultor IA** → **stand by** (não desenvolver/ligar agora).
+- **Consultor IA** → **removido do produto** (2026-08-07). Saiu do site, do app e do menu; as
+  tabelas `ai_*` continuam no banco, então dá para religar se você mudar de ideia.
 - **Pagamentos** → **decidido: Asaas** (PIX, boleto e cartão) com checkout **nativo** (o aluno não sai da plataforma). Stripe removido.
 - **Apple / Google (lojas)** → **por último**.
 - **Resend (e-mail)** → o cliente vai **enviar a chave**; integro assim que chegar.
@@ -16,15 +17,7 @@
 
 ## 🔴 Bloqueadores (sem isso, o recurso não funciona)
 
-### 1. Consultor IA — chaves de API
-- [ ] **Anthropic (Claude)** — criar chave em https://console.anthropic.com → `ANTHROPIC_API_KEY`
-- [ ] **OpenAI (embeddings)** — chave em https://platform.openai.com → `OPENAI_API_KEY`
-      (usada só para indexar o conteúdo; barato). Alternativa: Voyage AI.
-- [ ] **Base de conhecimento**: enviar os conteúdos que a IA pode usar (apostilas, aulas transcritas,
-      modelos, pareceres). Eu rodo a ingestão (função `ingest-embeddings`) e a IA passa a responder
-      **somente** com esse material.
-
-### 2. Pagamentos / Assinaturas
+### 1. Pagamentos / Assinaturas
 - [x] **Decisão de gateway**: **Asaas**, integrado. Assinatura mensal/anual + compra avulsa de
       curso/livro, com **PIX (QR Code), boleto e cartão** resolvidos dentro da própria plataforma.
 - [x] Chave de API e token de webhook recebidos (chave de **produção**).

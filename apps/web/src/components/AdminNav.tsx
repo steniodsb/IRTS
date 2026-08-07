@@ -71,7 +71,8 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="surface-navy sticky top-0 z-30 flex items-center justify-between border-b border-line bg-ink/90 px-4 py-3 backdrop-blur">
+        {/* Barra superior acompanha o tema (claro/escuro); só a sidebar é navy. */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/60 bg-ink/85 px-4 py-3 backdrop-blur">
           <button className="lg:hidden text-cream" onClick={() => setOpen(true)}><Menu size={22} /></button>
           <div className="hidden lg:block" />
           <div className="flex items-center gap-4">

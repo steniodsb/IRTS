@@ -8,7 +8,7 @@ insert into public.plans (name, slug, description, price_cents, interval, highli
   ('Gratuito','gratuito','Acesso a conteúdos abertos e amostras.', 0, 'free', false, 0,
    '["Notícias trabalhistas","Amostras de aulas","Comunidade (leitura)"]'::jsonb),
   ('Mensal','mensal','Acesso completo à área de membros, cobrado mensalmente.', 9700, 'month', true, 1,
-   '["Todos os cursos","Biblioteca completa","Consultor IA","Agenda e lives","Comunidade","Certificados"]'::jsonb),
+   '["Todos os cursos","Biblioteca completa","Ferramentas de negociação","Agenda e lives","Comunidade","Certificados"]'::jsonb),
   ('Anual','anual','Acesso completo com 2 meses de desconto no plano anual.', 97000, 'year', false, 2,
    '["Tudo do plano Mensal","2 meses grátis","Prioridade em mentorias"]'::jsonb)
 on conflict (slug) do nothing;
@@ -26,7 +26,7 @@ insert into public.site_settings (key, value) values
   ('brand', '{"name":"IRTS","full_name":"Inteligência em Relações Trabalhistas e Sindicais","tagline":"Formação e consultoria em relações trabalhistas e sindicais","primary":"#C9A227","bg":"#0A0A0A"}'::jsonb),
   ('contact', '{"email":"contato@irts.com.br","whatsapp":"","instagram":"","linkedin":""}'::jsonb),
   ('bio', '{"headline":"Sobre Newton dos Anjos","body":"Advogado especialista em relações trabalhistas e sindicais. [PENDENTE: biografia oficial fornecida pelo cliente]","photo_url":""}'::jsonb),
-  ('home_hero', '{"title":"Domine as relações trabalhistas e sindicais","subtitle":"Cursos, biblioteca técnica, mentorias e um Consultor IA treinado no conteúdo do IRTS.","cta":"Comece agora"}'::jsonb)
+  ('home_hero', '{"title":"Domine as relações trabalhistas e sindicais","subtitle":"Cursos, biblioteca técnica, mentorias e ferramentas de negociação.","cta":"Comece agora"}'::jsonb)
 on conflict (key) do update set value = excluded.value, updated_at = now();
 
 -- --- INÍCIO: notícias / avisos / atualizações ------------------------------
