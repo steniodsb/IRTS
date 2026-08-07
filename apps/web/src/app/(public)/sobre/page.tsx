@@ -71,48 +71,66 @@ export default async function SobrePage() {
         </div>
       </section>
 
-      {/* 2) SOBRE NEWTON DOS ANJOS — destaque, 2 colunas */}
+      {/* 2) SEGUNDA DOBRA — texto + CTA à esquerda, vídeo à direita */}
+      {video && (
+        <section className="mx-auto max-w-7xl px-4 py-16">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            {/* Container da esquerda: título, descrição e botão */}
+            <div>
+              <p className="mb-3 text-xs uppercase tracking-[0.2em] text-gold">Direto do fundador</p>
+              <h2 className="font-serif text-3xl leading-tight text-cream md:text-4xl">
+                Uma mensagem de {name}
+              </h2>
+              <p className="mt-5 text-lg text-cream/60">
+                Em poucos minutos, {name.split(' ')[0]} explica o que muda quando a relação com o
+                sindicato deixa de ser reação ao imprevisto e passa a ser um processo conduzido com
+                método — e como o IRTS foi construído para isso.
+              </p>
+              <LinkButton href="/cadastro" variant="gold" className="mt-8">
+                Criar minha conta <ArrowRight size={16} />
+              </LinkButton>
+            </div>
+
+            {/* Container da direita: o vídeo, sem moldura colorida.
+                Centralizado na coluna — o formato vertical encostado na borda
+                deixava um vão grande entre o texto e o vídeo. */}
+            <div className="flex justify-center">
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                poster={videoPoster || undefined}
+                className="max-h-[34rem] w-auto max-w-full rounded-2xl border border-line shadow-card"
+              >
+                <source src={video} type="video/mp4" />
+                Seu navegador não suporta vídeo.
+              </video>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3) SOBRE NEWTON DOS ANJOS — destaque, 2 colunas */}
       <section className="mx-auto max-w-7xl px-4 py-16">
         <SectionTitle overline="Quem lidera" title={`Sobre ${name}`} />
 
         <div className="mt-10 grid items-start gap-10 md:grid-cols-[2fr_3fr]">
-          {/* Visual da seção: vídeo de apresentação (se houver), senão a foto */}
+          {/* Foto */}
           <div className="relative">
-            {video ? (
-              <figure className="overflow-hidden rounded-2xl border border-line bg-navy shadow-card">
-                {/* Altura limitada para o vídeo vertical não dominar a seção */}
-                <div className="flex justify-center bg-navy-gradient p-3">
-                  <video
-                    controls
-                    playsInline
-                    preload="metadata"
-                    poster={videoPoster || undefined}
-                    className="max-h-[34rem] w-auto max-w-full rounded-xl"
-                  >
-                    <source src={video} type="video/mp4" />
-                    Seu navegador não suporta vídeo.
-                  </video>
+            <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-surface-alt">
+              {photo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={photo} alt={name} className="h-full w-full rounded-2xl object-cover" />
+              ) : (
+                <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center">
+                  <UserRound size={44} className="text-gold/40" />
+                  <p className="font-serif text-xl text-cream">Foto em breve</p>
+                  <p className="max-w-[16rem] px-6 text-sm text-cream/50">
+                    A imagem oficial será publicada em breve.
+                  </p>
                 </div>
-                <figcaption className="border-t border-white/10 px-4 py-3 text-center text-sm text-white/60">
-                  Uma mensagem de {name}
-                </figcaption>
-              </figure>
-            ) : (
-              <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-surface-alt">
-                {photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={photo} alt={name} className="h-full w-full rounded-2xl object-cover" />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center">
-                    <UserRound size={44} className="text-gold/40" />
-                    <p className="font-serif text-xl text-cream">Foto em breve</p>
-                    <p className="max-w-[16rem] px-6 text-sm text-cream/50">
-                      A imagem oficial será publicada em breve.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* Texto */}
@@ -151,7 +169,7 @@ export default async function SobrePage() {
         )}
       </section>
 
-      {/* 3) CONHEÇA O IRTS — CTA final */}
+      {/* 4) CONHEÇA O IRTS — CTA final */}
       <section className="mx-auto max-w-7xl px-4 pb-20">
         <div className="card relative overflow-hidden p-12 text-center">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,162,39,0.14),transparent_60%)]" />
