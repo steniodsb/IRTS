@@ -5,9 +5,20 @@
 1. Importar o repositório `IRTS` na **Vercel**.
 2. **Root Directory**: `apps/web`. Framework: Next.js. Build detectado automaticamente
    (o monorepo pnpm é reconhecido; `transpilePackages` já inclui `@irts/shared`).
-3. **Environment Variables** (copiar do `.env`):
-   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `NEXT_PUBLIC_SITE_URL`, etc. (as chaves do Asaas ficam só nos secrets das edge functions).
+3. **Environment Variables** — são só **três**, todas em Production, Preview e Development:
+
+   | Variável | Valor |
+   | --- | --- |
+   | `NEXT_PUBLIC_SUPABASE_URL` | `https://ivezfeaztisayqatyrkg.supabase.co` |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | chave publicável (`sb_publishable_…`) |
+   | `NEXT_PUBLIC_SITE_URL` | domínio final, com `https://` e sem barra no fim |
+
+   Os valores prontos para colar ficam em `vercel.env.txt` na raiz (arquivo local, gitignored).
+
+   **Não coloque na Vercel:** `SUPABASE_SERVICE_ROLE_KEY` (ignora o RLS e o app não a usa — o
+   `createAdminClient` existe mas não é chamado), as chaves do **Asaas** e do **Resend** (são
+   secrets das edge functions) e as `EXPO_PUBLIC_*` (são do app mobile). `VERCEL_URL` a própria
+   Vercel injeta.
 4. Deploy. Ajustar as **Redirect URLs** do Supabase Auth para o domínio da Vercel.
 5. Na quitação (Cláusula 5.2), migrar para a hospedagem/domínio do cliente (ex.: `app.irts.com.br`).
 
