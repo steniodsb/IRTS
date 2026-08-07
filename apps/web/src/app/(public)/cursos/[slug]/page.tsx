@@ -41,6 +41,12 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
     ? 'Gratuito'
     : course.price_cents ? formatBRL(course.price_cents) : 'Incluso no plano';
 
+  // Curso com preço próprio vai direto ao checkout; gratuito ou "incluso no
+  // plano" continua passando pelo cadastro/assinatura.
+  const podeComprar = !course.is_free && !!course.price_cents;
+  const ctaHref = podeComprar ? `/checkout?type=course&id=${course.id}` : '/cadastro';
+  const ctaLabel = course.is_free ? 'Começar' : podeComprar ? 'Comprar curso' : 'Entrar para acessar';
+
   return (
     <>
       {/* HERO */}
@@ -71,11 +77,15 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
             </div>
             <div className="p-6">
               <p className="text-3xl font-semibold text-gold">{price}</p>
-              <LinkButton href="/cadastro" variant="gold" className="mt-5 w-full">
-                {course.is_free ? 'Começar' : 'Entrar para acessar'}
+              <LinkButton href={ctaHref} variant="gold" className="mt-5 w-full">
+                {ctaLabel}
               </LinkButton>
               <p className="mt-3 text-center text-xs text-cream/40">
-                {course.is_free ? 'Crie sua conta gratuita para assistir.' : 'Acesso liberado após entrar na plataforma.'}
+                {course.is_free
+                  ? 'Crie sua conta gratuita para assistir.'
+                  : podeComprar
+                    ? 'PIX, boleto ou cartão. Acesso liberado assim que o pagamento é confirmado.'
+                    : 'Acesso liberado após entrar na plataforma.'}
               </p>
             </div>
           </div>
@@ -127,10 +137,12 @@ export default async function CourseSalesPage({ params }: { params: { slug: stri
             <p className="mt-2 text-sm text-cream/55">
               {course.is_free
                 ? 'Este curso é gratuito. Crie sua conta e comece agora.'
-                : 'Entre na plataforma para acessar todo o conteúdo deste curso.'}
+                : podeComprar
+                  ? 'Compre com PIX, boleto ou cartão sem sair da plataforma.'
+                  : 'Entre na plataforma para acessar todo o conteúdo deste curso.'}
             </p>
-            <LinkButton href="/cadastro" variant="gold" className="mt-5 w-full">
-              {course.is_free ? 'Começar' : 'Entrar para acessar'}
+            <LinkButton href={ctaHref} variant="gold" className="mt-5 w-full">
+              {ctaLabel}
             </LinkButton>
             <Link href="/cursos" className="mt-4 block text-center text-sm text-gold hover:underline">Ver todos os cursos</Link>
           </div>

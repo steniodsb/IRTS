@@ -23,10 +23,19 @@ export default async function InicioPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-serif text-3xl text-cream">Olá{firstName ? `, ${firstName}` : ''} 👋</h1>
-        <p className="mt-1 text-cream/50">Veja o que há de novo na plataforma.</p>
-      </div>
+      {/* Boas-vindas — mesmo bloco de destaque em azul usado na página pública */}
+      <section className="section-navy relative overflow-hidden rounded-2xl p-8 md:p-10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(201,162,39,0.18),transparent_60%)]" />
+        <div className="relative">
+          <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gold">Área de membros</p>
+          <h1 className="font-serif text-3xl text-white md:text-4xl">
+            Olá{firstName ? `, ${firstName}` : ''} 👋
+          </h1>
+          <p className="mt-3 max-w-xl text-white/70">
+            Veja o que há de novo na plataforma — notícias, sua próxima live e os cursos em andamento.
+          </p>
+        </div>
+      </section>
 
       {/* Continuar assistindo */}
       {enrollments && enrollments.length > 0 && (

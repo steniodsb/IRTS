@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Logo } from '@/components/Logo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { LinkButton } from '@/components/ui';
 import { createClient } from '@/lib/supabase/server';
 
@@ -19,7 +20,8 @@ export default async function PublicLayout({ children }: { children: React.React
 
   return (
     <div className="min-h-screen bg-ink">
-      <header className="sticky top-0 z-40 border-b border-line/60 bg-ink/85 backdrop-blur">
+      {/* Cabeçalho sempre em azul escuro (escopo surface-navy) */}
+      <header className="surface-navy sticky top-0 z-40 border-b border-line bg-ink/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <Logo withText />
           <nav className="hidden items-center gap-6 md:flex">
@@ -30,6 +32,7 @@ export default async function PublicLayout({ children }: { children: React.React
             ))}
           </nav>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {user ? (
               <LinkButton href="/app" variant="gold">Área de membros</LinkButton>
             ) : (
@@ -44,7 +47,8 @@ export default async function PublicLayout({ children }: { children: React.React
 
       <main>{children}</main>
 
-      <footer className="border-t border-line/60 bg-surface/40">
+      {/* Rodapé em azul escuro, fechando o par com o cabeçalho */}
+      <footer className="surface-navy border-t border-line">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4">
           <div className="md:col-span-2">
             <Logo withText />

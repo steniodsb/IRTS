@@ -37,7 +37,6 @@ export interface Plan {
   price_cents: number;
   currency: string;
   interval: PlanInterval;
-  stripe_price_id: string | null;
   features: string[];
   highlight: boolean;
   active: boolean;

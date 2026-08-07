@@ -115,7 +115,7 @@ export default async function AdminPlanosPage() {
                   <div className="mt-4">
                     <PlanForm plan={{
                       id: p.id, name: p.name, slug: p.slug, description: p.description,
-                      price_cents: p.price_cents, interval: p.interval, stripe_price_id: p.stripe_price_id,
+                      price_cents: p.price_cents, interval: p.interval,
                       features: Array.isArray(p.features) ? p.features : [],
                       highlight: p.highlight, active: p.active,
                     }} />

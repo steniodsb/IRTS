@@ -51,11 +51,7 @@ supabase secrets set \
   IA_MODEL=claude-sonnet-5 \
   EMBEDDINGS_PROVIDER=openai \
   OPENAI_API_KEY=... \
-  STRIPE_SECRET_KEY=... \
-  STRIPE_WEBHOOK_SECRET=... \
-  STRIPE_PRICE_MENSAL=... \
-  STRIPE_PRICE_ANUAL=... \
-  RESEND_API_KEY=... \
+  ASAAS_API_KEY=... \n  ASAAS_WEBHOOK_TOKEN=... \n  RESEND_API_KEY=... \
   EMAIL_FROM="IRTS Academy <no-reply@irts.com.br>" \
   OWNER_NOTIFY_EMAIL=newton@exemplo.com.br \
   NEXT_PUBLIC_SITE_URL=https://app.irts.com.br
@@ -66,7 +62,7 @@ supabase secrets set \
 ```bash
 supabase functions deploy consultor-ia
 supabase functions deploy ingest-embeddings
-supabase functions deploy stripe-webhook
+supabase functions deploy asaas-webhook
 supabase functions deploy checkout
 supabase functions deploy sign-asset
 supabase functions deploy cron-abandoned
@@ -84,11 +80,12 @@ select cron.schedule('abandono-diario','0 12 * * *', $$
 $$);
 ```
 
-## 8. Webhook do Stripe
-No dashboard do Stripe → Developers → Webhooks → endpoint:
-`https://ivezfeaztisayqatyrkg.functions.supabase.co/stripe-webhook`
-Eventos: `checkout.session.completed`, `payment_intent.succeeded`,
-`customer.subscription.created|updated|deleted`. Copie o "Signing secret" para `STRIPE_WEBHOOK_SECRET`.
+## 8. Webhook do Asaas
+No painel do Asaas → Integrações → Webhooks → nova configuração:
+`https://ivezfeaztisayqatyrkg.supabase.co/functions/v1/asaas-webhook`
+Eventos: todos os de cobrança (`PAYMENT_CONFIRMED`, `PAYMENT_RECEIVED`, `PAYMENT_OVERDUE`,
+`PAYMENT_REFUNDED`, `PAYMENT_DELETED`, `PAYMENT_CREDIT_CARD_CAPTURE_REFUSED`).
+Defina um "token de autenticação" e use o mesmo valor em `ASAAS_WEBHOOK_TOKEN`.
 
 ## 9. Gerar os tipos do banco (opcional, melhora o DX)
 ```bash

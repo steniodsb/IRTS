@@ -221,7 +221,7 @@ function CourseCurriculum({ courseId, modules, lessons }: { courseId: string; mo
               prefix={`modulos/${m.id}`}
               value={m.cover_url}
               onChange={(url) => setModuleCover(m.id, url)}
-              aspect="aspect-[16/6]"
+              ratio={16 / 6}
             />
           </div>
           <LessonList courseId={courseId} moduleId={m.id} lessons={lessons.filter((l) => l.module_id === m.id)} />

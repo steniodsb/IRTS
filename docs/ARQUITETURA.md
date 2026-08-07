@@ -18,7 +18,7 @@
                     └────────┬─────────┘
                              │
      ┌───────────────────────┼───────────────────────┐
-     │ Anthropic (Claude)    │ Stripe (pagamentos)   │ Resend (e-mail)
+     │ Anthropic (Claude)    │ Asaas (pagamentos)    │ Resend (e-mail)
      └───────────────────────┴───────────────────────┘
 ```
 
@@ -83,7 +83,8 @@ Detalhe completo em `supabase/migrations/20260722000100_schema.sql`.
 
 ## Pagamentos
 
-- Camada agnóstica; implementação de referência em **Stripe** (`checkout` + `stripe-webhook`).
+- **Asaas** (`checkout` + `asaas-webhook`), com checkout **nativo**: PIX (QR Code), boleto
+  (linha digitável) e cartão são resolvidos em `/checkout`, sem redirecionar o aluno para fora.
 - Assinatura (mensal/anual) em modo `subscription`; cursos/livros em modo `payment`.
 - Livros físicos geram `orders` com `shipping_address` e `tracking_code` (Correios) no admin.
 - Ver PENDENCIAS.md para a estratégia de assinatura dentro das lojas (in-app vs. web).

@@ -7,8 +7,8 @@ Funções Supabase (Deno + TypeScript). Cada função vive em
 | ------------------- | ---------- | ---------------------------------------------------------------- |
 | `consultor-ia`      | true       | Consultor IA (RAG): embed → busca semântica → Claude → histórico |
 | `ingest-embeddings` | true       | Ingestão admin da base de conhecimento (chunk + embeddings)      |
-| `stripe-webhook`    | false      | Recebe eventos do Stripe (pagamentos, assinaturas)               |
-| `checkout`          | true       | Cria sessões de Stripe Checkout / cancela assinatura             |
+| `asaas-webhook`     | false      | Recebe eventos de cobrança do Asaas (pagamentos, assinaturas)    |
+| `checkout`          | true       | Cobranças e assinaturas no Asaas (PIX/boleto/cartão) + cancelamento |
 | `sign-asset`        | true       | URLs assinadas para vídeos, biblioteca e certificados            |
 | `cron-abandoned`    | false      | Job diário: marca cursos abandonados + digest por e-mail         |
 
@@ -24,11 +24,9 @@ runtime das Edge Functions — não precisam ser definidas manualmente.
 | `OPENAI_API_KEY`            | consultor-ia, ingest-embeddings    | **PENDENTE** (chave real) |
 | `ANTHROPIC_API_KEY`         | consultor-ia                       | **PENDENTE** (chave real) |
 | `IA_MODEL`                  | consultor-ia (default claude-sonnet-5) | opcional              |
-| `STRIPE_SECRET_KEY`         | checkout, stripe-webhook           | **PENDENTE** (chave real) |
-| `STRIPE_WEBHOOK_SECRET`     | stripe-webhook                     | **PENDENTE** (chave real) |
-| `STRIPE_PRICE_MENSAL`       | checkout (fallback de preço)       | **PENDENTE**              |
-| `STRIPE_PRICE_ANUAL`        | checkout (fallback de preço)       | **PENDENTE**              |
-| `NEXT_PUBLIC_SITE_URL`      | checkout (success/cancel URLs)     | definir por ambiente      |
+| `ASAAS_API_KEY`             | checkout, asaas-webhook            | fornecida (produção)      |
+| `ASAAS_ENV`                 | checkout (força sandbox/production)| opcional                  |
+| `ASAAS_WEBHOOK_TOKEN`       | asaas-webhook                      | fornecida                 |
 | `RESEND_API_KEY`            | cron-abandoned (e-mail opcional)   | **PENDENTE** (chave real) |
 | `EMAIL_FROM`                | cron-abandoned                     | opcional                  |
 | `OWNER_NOTIFY_EMAIL`        | cron-abandoned                     | opcional                  |
@@ -45,11 +43,8 @@ runtime das Edge Functions — não precisam ser definidas manualmente.
 supabase secrets set OPENAI_API_KEY=sk-...
 supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
 supabase secrets set IA_MODEL=claude-sonnet-5
-supabase secrets set STRIPE_SECRET_KEY=sk_live_...
-supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
-supabase secrets set STRIPE_PRICE_MENSAL=price_...
-supabase secrets set STRIPE_PRICE_ANUAL=price_...
-supabase secrets set NEXT_PUBLIC_SITE_URL=https://app.irts.com.br
+supabase secrets set ASAAS_API_KEY='$aact_prod_...'
+supabase secrets set ASAAS_WEBHOOK_TOKEN=...
 supabase secrets set RESEND_API_KEY=re_...
 supabase secrets set EMAIL_FROM="IRTS Academy <no-reply@irts.com.br>"
 supabase secrets set OWNER_NOTIFY_EMAIL=newton@exemplo.com.br
@@ -65,13 +60,13 @@ supabase secrets set --env-file ./.env
 # Uma função:
 supabase functions deploy consultor-ia
 
-# Webhook do Stripe precisa de verify_jwt=false (já está no config.toml,
+# O webhook do Asaas precisa de verify_jwt=false (já está no config.toml,
 # mas pode-se forçar na linha de comando):
-supabase functions deploy stripe-webhook --no-verify-jwt
+supabase functions deploy asaas-webhook --no-verify-jwt
 supabase functions deploy cron-abandoned --no-verify-jwt
 
 # Todas:
-supabase functions deploy consultor-ia ingest-embeddings stripe-webhook checkout sign-asset cron-abandoned
+supabase functions deploy consultor-ia ingest-embeddings asaas-webhook checkout sign-asset cron-abandoned
 ```
 
 ## Testar localmente
@@ -87,11 +82,10 @@ curl -i http://localhost:54321/functions/v1/consultor-ia \
 
 ## Notas de integração
 
-- **stripe-webhook**: configure o endpoint no painel do Stripe apontando para
-  `https://<projeto>.functions.supabase.co/stripe-webhook` e assine os eventos
-  `checkout.session.completed`, `payment_intent.succeeded`,
-  `customer.subscription.created|updated|deleted`. Copie o signing secret para
-  `STRIPE_WEBHOOK_SECRET`.
+- **asaas-webhook**: configure o endpoint no painel do Asaas apontando para
+  `https://<projeto>.supabase.co/functions/v1/asaas-webhook`, assine os eventos
+  de cobrança (`PAYMENT_*`) e use em `ASAAS_WEBHOOK_TOKEN` o mesmo token de
+  autenticação definido lá.
 - **checkout**: para cursos/livros, cria `orders` (pending) + `order_items` e
   passa `order_id`/`user_id` no metadata; o webhook marca `orders.status='paid'`,
   disparando o trigger `on_order_paid` (matrícula automática + notificações).
@@ -100,3 +94,29 @@ curl -i http://localhost:54321/functions/v1/consultor-ia \
 - **sign-asset**: buckets esperados no Storage: `course-videos`, `library`,
   `certificates` (privados).
 ```
+
+## Pagamentos (Asaas)
+
+O checkout é **nativo**: a função `checkout` cria a cobrança na API do Asaas e
+devolve para o site o QR Code do PIX, a linha digitável do boleto ou o
+resultado do cartão. O aluno resolve tudo em `/checkout`, sem redirecionamento.
+
+Fluxo de liberação de acesso:
+
+1. `checkout` cria o pedido como `pending` (ou a assinatura como `incomplete`).
+2. O aluno paga.
+3. `asaas-webhook` recebe `PAYMENT_CONFIRMED`/`PAYMENT_RECEIVED` e marca o
+   pedido como `paid` — o trigger `on_order_paid` matricula e notifica — ou
+   ativa a assinatura estendendo `current_period_end`.
+4. Como rede de segurança, a tela de espera também consulta
+   `checkout?action=status`, que pergunta direto ao Asaas caso o webhook
+   atrase.
+
+Cadastre o webhook no painel do Asaas apontando para:
+
+```
+https://ivezfeaztisayqatyrkg.supabase.co/functions/v1/asaas-webhook
+```
+
+com os eventos de cobrança (`PAYMENT_*`) e o mesmo token de autenticação
+definido em `ASAAS_WEBHOOK_TOKEN`.

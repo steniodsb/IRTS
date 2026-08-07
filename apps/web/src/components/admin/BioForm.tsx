@@ -108,7 +108,7 @@ export function BioForm({ bio, homeMedia }: { bio: any; homeMedia: HomeMedia }) 
             label="Foto (Sobre)"
             value={photoUrl}
             onChange={setPhotoUrl}
-            aspect="aspect-[4/5]"
+            ratio={4 / 5}
           />
 
           <div className="space-y-3">
@@ -204,7 +204,7 @@ export function BioForm({ bio, homeMedia }: { bio: any; homeMedia: HomeMedia }) 
             label="Imagem da home"
             value={mediaUrl || null}
             onChange={(url) => setMediaUrl(url ?? '')}
-            aspect="aspect-video"
+            ratio={16 / 9}
           />
         )}
 

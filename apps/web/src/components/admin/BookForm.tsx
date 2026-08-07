@@ -100,6 +100,7 @@ export function BookForm({ book }: { book?: Book }) {
           prefix="livros"
           value={f.cover_url}
           onChange={(url) => set('cover_url', url)}
+          ratio={3 / 4}
         />
         <div className="flex flex-col">
           <label className="label">Descrição</label>

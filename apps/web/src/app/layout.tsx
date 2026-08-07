@@ -31,9 +31,30 @@ export const metadata: Metadata = {
   metadataBase: new URL(resolveSiteUrl()),
 };
 
+/**
+ * Aplica o tema antes da primeira pintura, evitando a piscada de tela clara
+ * em quem escolheu o escuro. Sem preferência salva, segue o sistema.
+ */
+const themeScript = `
+(function(){try{
+  var t = localStorage.getItem('irts-theme');
+  if (t !== 'light' && t !== 'dark') {
+    t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  if (t === 'dark') document.documentElement.classList.add('dark');
+}catch(e){}})();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${cormorant.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${cormorant.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );

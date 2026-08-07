@@ -7,6 +7,7 @@ import {
   ShoppingBag, CreditCard, Newspaper, Bell, BellRing, Wrench, UserCircle, Menu, X, ExternalLink,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -47,7 +48,7 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
           href={it.href}
           onClick={() => setOpen(false)}
           className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5 hover:text-cream'
+            isActive(it.href, it.exact) ? 'bg-gold/15 text-gold' : 'text-cream/70 hover:bg-cream/5 hover:text-cream'
           }`}
         >
           <it.icon size={18} /> {it.label}
@@ -58,24 +59,27 @@ export function AdminNav({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-ink">
-      <aside className="hidden w-64 shrink-0 border-r border-line/60 bg-surface/40 lg:block">
+      <aside className="surface-navy hidden w-64 shrink-0 border-r border-line lg:block">
         <div className="sticky top-0 h-screen">{Nav}</div>
       </aside>
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 border-r border-line bg-surface">{Nav}</aside>
+          <aside className="surface-navy absolute left-0 top-0 h-full w-64 border-r border-line">{Nav}</aside>
         </div>
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/60 bg-ink/85 px-4 py-3 backdrop-blur">
+        <header className="surface-navy sticky top-0 z-30 flex items-center justify-between border-b border-line bg-ink/90 px-4 py-3 backdrop-blur">
           <button className="lg:hidden text-cream" onClick={() => setOpen(true)}><Menu size={22} /></button>
           <div className="hidden lg:block" />
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold">
-            <ExternalLink size={16} /> Voltar ao site
-          </Link>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-cream/70 hover:text-gold">
+              <ExternalLink size={16} /> Voltar ao site
+            </Link>
+          </div>
         </header>
         <main className="min-w-0 flex-1 p-4 md:p-8">{children}</main>
       </div>

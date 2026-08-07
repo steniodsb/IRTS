@@ -7,7 +7,7 @@
    (o monorepo pnpm é reconhecido; `transpilePackages` já inclui `@irts/shared`).
 3. **Environment Variables** (copiar do `.env`):
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, etc.
+   `NEXT_PUBLIC_SITE_URL`, etc. (as chaves do Asaas ficam só nos secrets das edge functions).
 4. Deploy. Ajustar as **Redirect URLs** do Supabase Auth para o domínio da Vercel.
 5. Na quitação (Cláusula 5.2), migrar para a hospedagem/domínio do cliente (ex.: `app.irts.com.br`).
 
@@ -43,11 +43,11 @@ Ver `docs/CONFIGURACAO-SUPABASE.md` §5–§8 (secrets, deploy, webhook, cron).
 
 ## Checklist de "go-live"
 - [ ] Migrations aplicadas + owner definido
-- [ ] Secrets configurados (IA, Stripe, Resend)
+- [ ] Secrets configurados (IA, Asaas, Resend)
 - [ ] Web publicada + Redirect URLs atualizadas
 - [ ] Confirmação de e-mail ligada
 - [ ] Conteúdo real carregado (cursos, biblioteca, bio, planos)
 - [ ] Base de conhecimento da IA ingerida
-- [ ] Produtos/preços do Stripe criados + webhook ativo
+- [ ] Planos com valor definido + webhook do Asaas ativo
 - [ ] Apps buildados e submetidos às lojas
 - [ ] Termos e Política de Privacidade revisados

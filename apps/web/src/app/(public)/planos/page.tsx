@@ -50,7 +50,17 @@ export default async function PlanosPage() {
                   </li>
                 ))}
               </ul>
-              <LinkButton href="/cadastro" variant={p.highlight ? 'gold' : 'outline'} className="mt-7 w-full">
+              {/* Na fase de lançamento e no plano gratuito basta criar a conta;
+                  nos demais, vai direto para o checkout do plano. */}
+              <LinkButton
+                href={
+                  isLaunch || p.price_cents === 0
+                    ? '/cadastro'
+                    : `/checkout?type=subscription&plan=${p.slug}`
+                }
+                variant={p.highlight ? 'gold' : 'outline'}
+                className="mt-7 w-full"
+              >
                 {isLaunch && p.price_cents > 0 ? 'Acessar grátis' : p.price_cents === 0 ? 'Criar conta' : 'Assinar'}
               </LinkButton>
             </Card>

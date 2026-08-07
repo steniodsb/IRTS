@@ -7,6 +7,10 @@ node_modules/
 .env.*
 !.env.example
 .ENV.txt
+# Chaves soltas enviadas pelo cliente (ex.: asaas.env.txt)
+*.env.txt
+*credenciais*
+*secrets*
 
 # Client-private material (do not publish to GitHub)
 _client/
@@ -51,6 +55,7 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+.claude/
 
 # Vídeos (usar Storage, não versionar)
 *.mp4

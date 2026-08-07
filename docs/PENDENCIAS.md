@@ -8,7 +8,7 @@
 ## 🧭 Decisões e prioridades (atualizado 2026-07-22)
 
 - **Consultor IA** → **stand by** (não desenvolver/ligar agora).
-- **Pagamentos** → **decidir depois** (deixar para testar mais adiante). Stripe segue implementado como referência.
+- **Pagamentos** → **decidido: Asaas** (PIX, boleto e cartão) com checkout **nativo** (o aluno não sai da plataforma). Stripe removido.
 - **Apple / Google (lojas)** → **por último**.
 - **Resend (e-mail)** → o cliente vai **enviar a chave**; integro assim que chegar.
 - **Próximo passo sugerido (sem depender de chaves):** `pnpm install` + `typecheck` para o projeto compilar,
@@ -25,12 +25,15 @@
       **somente** com esse material.
 
 ### 2. Pagamentos / Assinaturas
-- [ ] **Decisão de gateway**: implementei **Stripe** (assinatura mensal/anual + compra avulsa de
-      curso/livro, com PIX e cartão). Se preferir **Mercado Pago / Asaas** (mais comum p/ PIX e boleto
-      no Brasil), me avise que troco a integração — a arquitetura já é agnóstica.
-- [ ] Conta no gateway + chaves: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
-      `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
-- [ ] Criar os produtos/preços (mensal e anual) e me passar os IDs (`STRIPE_PRICE_MENSAL`, `STRIPE_PRICE_ANUAL`).
+- [x] **Decisão de gateway**: **Asaas**, integrado. Assinatura mensal/anual + compra avulsa de
+      curso/livro, com **PIX (QR Code), boleto e cartão** resolvidos dentro da própria plataforma.
+- [x] Chave de API e token de webhook recebidos (chave de **produção**).
+- [ ] **Cadastrar o webhook no painel do Asaas** (Integrações → Webhooks) apontando para
+      `https://ivezfeaztisayqatyrkg.supabase.co/functions/v1/asaas-webhook`, com os eventos de
+      cobrança (`PAYMENT_*`) e o mesmo token de autenticação. **Sem isso o acesso não é liberado
+      automaticamente após o pagamento.**
+- [ ] Rodar um teste de ponta a ponta. Recomendo criar antes uma chave de **sandbox**
+      (`aact_hmlg_...`) — com a chave de produção, qualquer teste gera cobrança real.
 - [ ] **Definir os valores** dos planos e dos cursos/livros (deixei exemplos: mensal R$97, anual R$970).
 
 ### 3. Publicação nas lojas (App Store / Google Play)
@@ -70,7 +73,7 @@
    vender a assinatura **no site** (web) e o app apenas **libera o acesso** de quem já é assinante
    (sem botão de compra dentro do app, como fazem Netflix/Spotify). Recomendo esse caminho.
    Alternativa: usar o pagamento in-app (mais simples de aprovar, porém com comissão).
-2. **Gateway de pagamento**: Stripe (implementado) x Mercado Pago x Asaas.
+2. ~~**Gateway de pagamento**~~ — decidido: **Asaas**, já integrado.
 3. **Hospedagem dos vídeos** (ver acima).
 4. **Confirmação de e-mail no cadastro**: hoje está desligada p/ facilitar testes; recomendo ligar em produção.
 

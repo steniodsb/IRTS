@@ -2,17 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   TOKENS DE COR
+   Os valores são triplas RGB (sem vírgula) para o Tailwind poder aplicar
+   opacidade — ex.: `text-cream/60` vira rgb(var(--c-cream) / 0.6).
+   ========================================================================== */
+
 :root {
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* ---- TEMA CLARO (off-white) ---- */
+  --c-ink: 247 245 240; /* #F7F5F0 — fundo da página */
+  --c-cream: 16 27 45; /* #101B2D — texto principal (azul escuro) */
+  --c-surface: 255 255 255; /* #FFFFFF — cartões */
+  --c-surface-alt: 241 237 228; /* #F1EDE4 — campos, faixas */
+  --c-line: 228 221 207; /* #E4DDCF — bordas */
+
+  /* Dourado escurecido: contraste AA sobre off-white */
+  --c-gold: 138 106 26; /* #8A6A1A */
+  --c-gold-light: 201 162 39; /* #C9A227 */
+  --c-gold-bright: 229 199 103; /* #E5C767 */
+  --c-gold-dark: 107 79 16; /* #6B4F10 */
+
+  --shadow-card: 0 1px 2px rgba(16, 27, 45, 0.06), 0 8px 24px rgba(16, 27, 45, 0.06);
+  --gold-text-gradient: linear-gradient(135deg, #b0891f 0%, #8a6a1a 55%, #6b4f10 100%);
+  --scrollbar-thumb: #ddd5c6;
+  --scrollbar-thumb-hover: #cfc5b2;
+
+  color-scheme: light;
+}
+
+/* ---- TEMA ESCURO ---- */
+.dark {
+  --c-ink: 10 18 32; /* #0A1220 */
+  --c-cream: 241 237 228; /* #F1EDE4 — texto claro */
+  --c-surface: 16 27 45; /* #101B2D */
+  --c-surface-alt: 22 36 59; /* #16243B */
+  --c-line: 36 52 79; /* #24344F */
+
+  /* Sobre fundo escuro o dourado vivo é que tem contraste */
+  --c-gold: 201 162 39; /* #C9A227 */
+  --c-gold-light: 229 199 103; /* #E5C767 */
+  --c-gold-bright: 242 222 155; /* #F2DE9B */
+  --c-gold-dark: 169 132 35; /* #A98423 */
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --gold-text-gradient: linear-gradient(135deg, #f2de9b 0%, #e5c767 55%, #c9a227 100%);
+  --scrollbar-thumb: #24344f;
+  --scrollbar-thumb-hover: #32476a;
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   ESCOPO INVERTIDO — azul escuro
+   Aplicado na sidebar, nos headers e em cartões de destaque. Qualquer filho
+   que use bg-surface / text-cream / border-line já sai correto sobre o navy,
+   nos DOIS temas.
+   ========================================================================== */
+.surface-navy,
+.section-navy {
+  --c-ink: 16 27 45; /* #101B2D */
+  --c-cream: 241 237 228; /* #F1EDE4 */
+  --c-surface: 22 36 59; /* #16243B */
+  --c-surface-alt: 27 44 70; /* #1B2C46 */
+  --c-line: 38 55 79; /* #26374F */
+
+  --c-gold: 201 162 39;
+  --c-gold-light: 229 199 103;
+  --c-gold-bright: 242 222 155;
+  --c-gold-dark: 169 132 35;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --gold-text-gradient: linear-gradient(135deg, #f2de9b 0%, #e5c767 55%, #c9a227 100%);
+
+  color-scheme: dark;
+  color: rgb(var(--c-cream));
+}
+
+/* Só o escopo "sólido" pinta o próprio fundo; `.section-navy` usa o gradiente. */
+.surface-navy {
+  background-color: rgb(var(--c-ink));
+}
+
+/* Bloco escuro (azul) para seções de destaque */
+.section-navy {
+  background-image: linear-gradient(180deg, #16243b 0%, #0a1220 100%);
 }
 
 @layer base {
   body {
-    /* ink = off-white (fundo) · cream = azul escuro (texto) */
     @apply bg-ink text-cream font-sans antialiased;
   }
-  h1, h2, h3, .font-display {
+  h1,
+  h2,
+  h3,
+  .font-display {
     @apply font-serif;
   }
 }
@@ -28,8 +114,9 @@
   .btn-outline {
     @apply btn border border-gold/60 text-gold hover:bg-gold/10;
   }
+  /* `cream` é a cor do texto: 5% dela é um véu sutil nos dois temas */
   .btn-ghost {
-    @apply btn text-cream/70 hover:bg-navy/5;
+    @apply btn text-cream/70 hover:bg-cream/5;
   }
   /* Botão sólido azul escuro (ações de destaque secundárias) */
   .btn-navy {
@@ -41,28 +128,50 @@
   .input {
     @apply w-full rounded-xl border border-line bg-surface-alt px-4 py-2.5 text-cream placeholder:text-cream/40 outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
-  .label { @apply block text-sm text-cream/70 mb-1.5; }
-  .chip { @apply inline-flex items-center rounded-full border border-line px-3 py-1 text-xs text-cream/80; }
+  .label {
+    @apply block text-sm text-cream/70 mb-1.5;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line px-3 py-1 text-xs text-cream/80;
+  }
   .gold-text {
-    /* tons escurecidos para manter contraste sobre o off-white */
-    background-image: linear-gradient(135deg, #B0891F 0%, #8A6A1A 55%, #6B4F10 100%);
+    background-image: var(--gold-text-gradient);
     @apply bg-clip-text text-transparent;
   }
-  /* Bloco escuro (azul) para seções de destaque sobre o off-white */
-  .section-navy {
-    @apply bg-navy-gradient text-white;
+  /* Véu neutro para hover/estado ativo — funciona nos dois temas */
+  .hover-veil {
+    @apply hover:bg-cream/5;
   }
 }
 
-/* Scrollbar sutil (tema claro) */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #DDD5C6; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #CFC5B2; }
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
 
 /* Impressão de certificado: mostra só a área do certificado */
 @media print {
-  body * { visibility: hidden; }
-  .print-area, .print-area * { visibility: visible; }
-  .print-area { position: absolute; inset: 0; margin: 0; }
-  .no-print { display: none !important; }
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
 }

@@ -7,6 +7,7 @@ import {
   Wrench, BellRing,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { createClient } from '@/lib/supabase/client';
 import { initials } from '@irts/shared';
 
@@ -52,7 +53,7 @@ export function MemberNav({
           href={it.href}
           onClick={() => setOpen(false)}
           className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-            isActive(it.href, it.exact) ? 'bg-gold/10 text-gold' : 'text-cream/70 hover:bg-navy/5 hover:text-cream'
+            isActive(it.href, it.exact) ? 'bg-gold/15 text-gold' : 'text-cream/70 hover:bg-cream/5 hover:text-cream'
           }`}
         >
           <it.icon size={18} /> {it.label}
@@ -60,12 +61,12 @@ export function MemberNav({
       ))}
       {isAdmin && (
         <Link href="/admin" onClick={() => setOpen(false)}
-          className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/70 transition hover:bg-navy/5 hover:text-gold">
+          className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/70 transition hover:bg-cream/5 hover:text-gold">
           <Shield size={18} /> Administração
         </Link>
       )}
       <button onClick={signOut}
-        className="mt-auto flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/60 transition hover:bg-navy/5 hover:text-red-400">
+        className="mt-auto flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-cream/60 transition hover:bg-cream/5 hover:text-red-400">
         <LogOut size={18} /> Sair
       </button>
     </nav>
@@ -73,8 +74,8 @@ export function MemberNav({
 
   return (
     <div className="flex min-h-screen bg-ink">
-      {/* Sidebar desktop */}
-      <aside className="hidden w-64 shrink-0 border-r border-line/60 bg-surface/40 lg:block">
+      {/* Sidebar desktop — sempre em azul escuro (escopo surface-navy) */}
+      <aside className="surface-navy hidden w-64 shrink-0 border-r border-line lg:block">
         <div className="sticky top-0 h-screen">{Nav}</div>
       </aside>
 
@@ -82,18 +83,19 @@ export function MemberNav({
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 border-r border-line bg-surface">{Nav}</aside>
+          <aside className="surface-navy absolute left-0 top-0 h-full w-64 border-r border-line">{Nav}</aside>
         </div>
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/60 bg-ink/85 px-4 py-3 backdrop-blur">
+        <header className="surface-navy sticky top-0 z-30 flex items-center justify-between border-b border-line bg-ink/90 px-4 py-3 backdrop-blur">
           <button className="lg:hidden text-cream" onClick={() => setOpen(true)}><Menu size={22} /></button>
           <div className="hidden lg:block" />
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <Link href="/app/conta?tab=notificacoes" className="relative text-cream/70 hover:text-gold">
               <Bell size={20} />
-              {unread > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-white">{unread}</span>}
+              {unread > 0 && <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[10px] font-bold text-navy">{unread}</span>}
             </Link>
             <Link href="/app/conta" className="flex items-center gap-2">
               <span className="hidden text-sm text-cream/70 sm:block">{profile?.full_name ?? 'Minha conta'}</span>

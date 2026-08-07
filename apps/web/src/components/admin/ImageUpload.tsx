@@ -1,40 +1,69 @@
 'use client';
-import { useState } from 'react';
-import { ImagePlus, Loader2, X } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Crop, ImagePlus, Loader2, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { ImageCropper } from '@/components/admin/ImageCropper';
 
 /**
  * Upload de imagem para um bucket público do Supabase Storage.
- * Retorna a URL pública via onChange. Mostra preview.
+ *
+ * O arquivo escolhido passa antes pelo editor de recorte: o que o admin
+ * enquadra é exatamente o que é gravado. Sem isso a imagem subia inteira e o
+ * corte acontecia só no CSS (`object-cover`), cortando partes importantes.
  */
+
+/** Tamanho máximo do arquivo de entrada (antes do recorte). */
+const MAX_INPUT_MB = 15;
+
 export function ImageUpload({
   bucket = 'course-covers',
   prefix = '',
   value,
   onChange,
   label = 'Capa',
-  aspect = 'aspect-video',
+  ratio = 16 / 9,
 }: {
   bucket?: string;
   prefix?: string;
   value?: string | null;
   onChange: (url: string | null) => void;
   label?: string;
-  aspect?: string;
+  /** Proporção largura/altura em que a imagem será exibida no site. */
+  ratio?: number;
 }) {
   const supabase = createClient();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [paraRecortar, setParaRecortar] = useState<File | null>(null);
 
-  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+  function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+    // Permite reescolher o mesmo arquivo depois de cancelar.
+    e.target.value = '';
     if (!file) return;
-    setBusy(true); setErr(null);
+    setErr(null);
+    if (!file.type.startsWith('image/')) {
+      setErr('Escolha um arquivo de imagem.');
+      return;
+    }
+    if (file.size > MAX_INPUT_MB * 1024 * 1024) {
+      setErr(`Imagem muito grande (máx. ${MAX_INPUT_MB} MB).`);
+      return;
+    }
+    setParaRecortar(file);
+  }
+
+  async function enviar(blob: Blob, ext: string) {
+    setParaRecortar(null);
+    setBusy(true);
+    setErr(null);
     try {
-      const ext = file.name.split('.').pop() || 'jpg';
       const path = `${prefix ? prefix + '/' : ''}${crypto.randomUUID()}.${ext}`;
-      const { error } = await supabase.storage.from(bucket).upload(path, file, {
-        cacheControl: '3600', upsert: true,
+      const { error } = await supabase.storage.from(bucket).upload(path, blob, {
+        cacheControl: '3600',
+        upsert: true,
+        contentType: blob.type,
       });
       if (error) throw error;
       const { data } = supabase.storage.from(bucket).getPublicUrl(path);
@@ -49,7 +78,10 @@ export function ImageUpload({
   return (
     <div>
       <label className="label">{label}</label>
-      <div className={`relative w-full overflow-hidden rounded-xl border border-line bg-surface-alt ${aspect}`}>
+      <div
+        style={{ aspectRatio: String(ratio) }}
+        className="relative w-full overflow-hidden rounded-xl border border-line bg-surface-alt"
+      >
         {value ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={value} alt="" className="h-full w-full object-cover" />
@@ -64,17 +96,49 @@ export function ImageUpload({
           </div>
         )}
         {value && !busy && (
-          <button type="button" onClick={() => onChange(null)}
-            className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-white/90 hover:text-red-400">
+          <button
+            type="button"
+            onClick={() => onChange(null)}
+            aria-label="Remover imagem"
+            className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-white/90 hover:text-red-400"
+          >
             <X size={16} />
           </button>
         )}
       </div>
-      <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm text-gold hover:underline">
-        <ImagePlus size={15} /> {value ? 'Trocar imagem' : 'Enviar imagem'}
-        <input type="file" accept="image/*" className="hidden" onChange={onFile} disabled={busy} />
-      </label>
+
+      <div className="mt-2 flex items-center gap-4">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={busy}
+          className="inline-flex items-center gap-2 text-sm text-gold hover:underline disabled:opacity-50"
+        >
+          <ImagePlus size={15} /> {value ? 'Trocar imagem' : 'Enviar imagem'}
+        </button>
+        <span className="inline-flex items-center gap-1.5 text-xs text-cream/40">
+          <Crop size={13} /> você escolhe o enquadramento
+        </span>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onFile}
+        disabled={busy}
+      />
+
       {err && <p className="mt-1 text-sm text-red-400">{err}</p>}
+
+      {paraRecortar && (
+        <ImageCropper
+          file={paraRecortar}
+          ratio={ratio}
+          onCancel={() => setParaRecortar(null)}
+          onConfirm={enviar}
+        />
+      )}
     </div>
   );
 }

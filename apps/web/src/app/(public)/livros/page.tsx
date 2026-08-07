@@ -43,8 +43,12 @@ export default async function LivrosPage() {
                   {b.price_cents ? formatBRL(b.price_cents) : 'Sob consulta'}
                 </p>
                 <p className="mt-1 text-xs text-cream/40">{b.stock > 0 ? 'Em estoque' : 'Indisponível'}</p>
-                <LinkButton href="/cadastro" variant={b.stock > 0 ? 'gold' : 'outline'} className="mt-4 w-full">
-                  {b.stock > 0 ? 'Comprar' : 'Avise-me'}
+                <LinkButton
+                  href={b.stock > 0 && b.price_cents ? `/checkout?type=book&id=${b.id}` : '/contato'}
+                  variant={b.stock > 0 ? 'gold' : 'outline'}
+                  className="mt-4 w-full"
+                >
+                  {b.stock > 0 && b.price_cents ? 'Comprar' : b.stock > 0 ? 'Consultar' : 'Avise-me'}
                 </LinkButton>
               </div>
             </Card>

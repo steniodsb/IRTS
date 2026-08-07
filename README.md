@@ -36,7 +36,7 @@ Também: **área pública** (bio, cursos, mentorias, livros físicos, planos), *
 │   └── shared/       # tipos, tokens de marca, helpers, client Supabase
 ├── supabase/
 │   ├── migrations/   # schema, RLS, triggers, storage, seed (SQL portável)
-│   ├── functions/    # edge functions (Consultor IA, Stripe, notificações)
+│   ├── functions/    # edge functions (Consultor IA, Asaas, notificações)
 │   └── config.toml
 ├── docs/             # ARQUITETURA, DEPLOY, PENDENCIAS, CONFIGURACAO-SUPABASE
 └── _client/          # contrato + material do cliente (NÃO versionado)
@@ -63,7 +63,7 @@ pnpm dev:mobile               # Expo — abrir no Expo Go / simulador
 ```
 
 > ⚠️ Antes de tudo funcionar 100%, veja **[docs/PENDENCIAS.md](docs/PENDENCIAS.md)** — há chaves de API
-> e contas de loja que **dependem do cliente** (Anthropic, Stripe, Apple/Google, etc.).
+> e contas de loja que **dependem do cliente** (Anthropic, Asaas, Apple/Google, etc.).
 
 ## Documentação
 

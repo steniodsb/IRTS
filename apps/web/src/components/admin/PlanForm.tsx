@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 type Plan = {
   id?: string;
   name?: string; slug?: string; description?: string | null;
-  price_cents?: number; interval?: string; stripe_price_id?: string | null;
+  price_cents?: number; interval?: string;
   features?: string[]; highlight?: boolean; active?: boolean;
 };
 
@@ -27,7 +27,6 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     slug: plan?.slug ?? '',
     description: plan?.description ?? '',
     interval: plan?.interval ?? 'month',
-    stripe_price_id: plan?.stripe_price_id ?? '',
     highlight: plan?.highlight ?? false,
     active: plan?.active ?? true,
   });
@@ -48,7 +47,6 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       description: f.description || null,
       price_cents: Math.round(parseFloat(priceReais || '0') * 100) || 0,
       interval: f.interval,
-      stripe_price_id: f.stripe_price_id || null,
       features,
       highlight: f.highlight,
       active: f.active,
@@ -62,7 +60,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         const { error } = await supabase.from('plans').insert(payload);
         if (error) throw error;
         setMsg({ ok: true, text: 'Plano criado.' });
-        setF({ name: '', slug: '', description: '', interval: 'month', stripe_price_id: '', highlight: false, active: true });
+        setF({ name: '', slug: '', description: '', interval: 'month', highlight: false, active: true });
         setPriceReais('0');
         setFeaturesText('');
       }
@@ -106,10 +104,6 @@ export function PlanForm({ plan }: { plan?: Plan }) {
             <option value="one_time">Único</option>
           </select>
         </div>
-      </div>
-      <div>
-        <label className="label">Stripe Price ID (opcional)</label>
-        <input className="input" placeholder="price_..." value={f.stripe_price_id ?? ''} onChange={(e) => set('stripe_price_id', e.target.value)} />
       </div>
       <div>
         <label className="label">Recursos (um por linha)</label>
