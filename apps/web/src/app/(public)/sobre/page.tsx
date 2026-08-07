@@ -30,6 +30,9 @@ export default async function SobrePage() {
   const name: string = bio.name || 'Newton dos Anjos';
   const tagline: string = bio.tagline || '';
   const photo: string = bio.photo_url || '';
+  // Vídeo de apresentação: quando existe, é ele o visual da seção do Newton.
+  const video: string = bio.video_url || '';
+  const videoPoster: string = bio.video_poster || '';
   const paragraphs = toParagraphs(bio.body);
   const credenciais: { titulo?: string; texto?: string }[] = Array.isArray(bio.credenciais)
     ? bio.credenciais
@@ -54,8 +57,8 @@ export default async function SobrePage() {
                 respaldo técnico que ela merece.
               </p>
               <p>
-                Reunimos formação aplicada, um acervo estratégico sempre atualizado e inteligência
-                artificial treinada no tema, para que negociações coletivas, compliance e governança
+                Reunimos formação aplicada, um acervo estratégico sempre atualizado e ferramentas
+                práticas de negociação, para que negociações coletivas, compliance e governança
                 trabalhista deixem de ser reação ao imprevisto e passem a ser processo conduzido com
                 método.
               </p>
@@ -73,22 +76,43 @@ export default async function SobrePage() {
         <SectionTitle overline="Quem lidera" title={`Sobre ${name}`} />
 
         <div className="mt-10 grid items-start gap-10 md:grid-cols-[2fr_3fr]">
-          {/* Foto */}
+          {/* Visual da seção: vídeo de apresentação (se houver), senão a foto */}
           <div className="relative">
-            <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-surface-alt">
-              {photo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={photo} alt={name} className="h-full w-full rounded-2xl object-cover" />
-              ) : (
-                <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center">
-                  <UserRound size={44} className="text-gold/40" />
-                  <p className="font-serif text-xl text-cream">Foto em breve</p>
-                  <p className="max-w-[16rem] px-6 text-sm text-cream/50">
-                    A imagem oficial será publicada em breve.
-                  </p>
+            {video ? (
+              <figure className="overflow-hidden rounded-2xl border border-line bg-navy shadow-card">
+                {/* Altura limitada para o vídeo vertical não dominar a seção */}
+                <div className="flex justify-center bg-navy-gradient p-3">
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={videoPoster || undefined}
+                    className="max-h-[34rem] w-auto max-w-full rounded-xl"
+                  >
+                    <source src={video} type="video/mp4" />
+                    Seu navegador não suporta vídeo.
+                  </video>
                 </div>
-              )}
-            </div>
+                <figcaption className="border-t border-white/10 px-4 py-3 text-center text-sm text-white/60">
+                  Uma mensagem de {name}
+                </figcaption>
+              </figure>
+            ) : (
+              <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-surface-alt">
+                {photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={photo} alt={name} className="h-full w-full rounded-2xl object-cover" />
+                ) : (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center">
+                    <UserRound size={44} className="text-gold/40" />
+                    <p className="font-serif text-xl text-cream">Foto em breve</p>
+                    <p className="max-w-[16rem] px-6 text-sm text-cream/50">
+                      A imagem oficial será publicada em breve.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Texto */}

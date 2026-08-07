@@ -27,6 +27,9 @@ export function BioForm({ bio, homeMedia }: { bio: any; homeMedia: HomeMedia }) 
       ? bio.credenciais.map((c: any) => ({ titulo: c?.titulo ?? '', texto: c?.texto ?? '' }))
       : [],
   );
+  // Vídeo de apresentação exibido na seção "Sobre <nome>"
+  const [videoUrl, setVideoUrl] = useState<string>(bio?.video_url ?? '');
+  const [videoPoster, setVideoPoster] = useState<string | null>(bio?.video_poster ?? null);
 
   // --- Home media ---
   const [mediaType, setMediaType] = useState<'image' | 'video'>(homeMedia?.type === 'video' ? 'video' : 'image');
@@ -61,6 +64,8 @@ export function BioForm({ bio, homeMedia }: { bio: any; homeMedia: HomeMedia }) 
       name: name.trim(),
       tagline: tagline.trim(),
       photo_url: photoUrl ?? '',
+      video_url: videoUrl.trim(),
+      video_poster: videoPoster ?? '',
       body,
       credenciais: credenciais
         .map((c) => ({ titulo: c.titulo.trim(), texto: c.texto.trim() }))
@@ -124,6 +129,32 @@ export function BioForm({ bio, homeMedia }: { bio: any; homeMedia: HomeMedia }) 
               <label className="label">Headline</label>
               <input className="input" placeholder="Título da seção (opcional)" value={headline} onChange={(e) => setHeadline(e.target.value)} />
             </div>
+          </div>
+        </div>
+
+        {/* Vídeo de apresentação */}
+        <div className="grid gap-6 md:grid-cols-[240px_1fr]">
+          <ImageUpload
+            bucket="public-assets"
+            prefix="bio"
+            label="Capa do vídeo (opcional)"
+            value={videoPoster}
+            onChange={setVideoPoster}
+            ratio={9 / 16}
+          />
+          <div>
+            <label className="label">Vídeo de apresentação (URL)</label>
+            <input
+              className="input"
+              placeholder="https://…/newton-apresentacao.mp4"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+            />
+            <p className="mt-1.5 text-xs text-cream/40">
+              Arquivo .mp4 hospedado no Storage (bucket <code>public-assets</code>). Aparece na
+              seção “Sobre {name || 'Newton dos Anjos'}” da página pública. Se ficar vazio, a
+              seção mostra a foto.
+            </p>
           </div>
         </div>
 
